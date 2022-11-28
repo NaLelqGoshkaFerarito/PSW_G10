@@ -1,0 +1,5 @@
+host: eu1.cloud.thethings.network
+port: 1883 or 8883
+username: project-software-engineering@ttn
+password-key:
+NNSXS.DTT4HTNBXEQDZ4QYU6SG73Q2OXCERCZ6574RVXI.CQE6IG6FYNJOO2MOFMXZVWZE4GXTCC2YXNQNFDLQL4APZMWU6ZGA
