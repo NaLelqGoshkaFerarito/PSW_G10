@@ -1,0 +1,5 @@
+--New log started at [11/28/2022, 11:17:36]--
+[11/28/2022, 11:17:36]: Testing
+[11/28/2022, 11:17:38]: Testing after 2 seconds
+--New log started at [11/28/2022, 11:17:38]--
+[11/28/2022, 11:17:38]: Testing with the second logger
