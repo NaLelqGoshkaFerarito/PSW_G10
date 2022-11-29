@@ -1,9 +1,10 @@
 import loggers.console_logger
+from loggers.csv_logger import CSVLogger
 
 
 # this class directly interfaces with the broker
 class ClientPlain:
-    __logger = loggers.console_logger.ConsoleLogger()
+    __logger = CSVLogger()
     __global_id = 0
 
     # default constructor

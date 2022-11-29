@@ -6,19 +6,12 @@ from clients.client_mqtt import ClientMQTT
 from loggers.file_logger import FileLogger
 import time
 import json
+from loggers.csv_logger import CSVLogger
+from clients.data import Data
 
-fl = FileLogger()
-fl.log("Testing")
-time.sleep(2)
-fl.log("Testing after 2 seconds")
-fl2 = FileLogger()
-fl2.log("Testing with the second logger")
-
-# cp = ClientPlain()
-# mqtt = ClientMQTT(cp)
-# mqtt.connect()
-# msg = mqtt.subscribe("v3/project-software-engineering@ttn/devices/py-wierden/up")
-# mqtt.loop_forever()
-
-
+cp = ClientPlain()
+mqtt = ClientMQTT(cp)
+mqtt.connect()
+msg = mqtt.subscribe("v3/project-software-engineering@ttn/devices/py-wierden/up")
+mqtt.loop_forever()
 

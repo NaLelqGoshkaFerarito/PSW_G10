@@ -2,7 +2,7 @@ from .i_logger import ILogger
 from datetime import datetime
 
 
-# implements console logging functionality
+# implements txt file logging functionality
 class FileLogger(ILogger):
     __file_name = datetime.now().strftime("log_%m_%d_%Y.txt")
 
