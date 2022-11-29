@@ -41,7 +41,6 @@ class ClientMQTT:
         ClientMQTT.__logger.log("Status: " + mqtt.connack_string(rc))
 
     def disconnect(self):
-        self.__logger.log("Disconnecting")
         self.__client.disconnect()
 
     def _on_message(client, userdata, message):

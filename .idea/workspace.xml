@@ -2,14 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="87a6232f-ef40-4ab2-9d4c-b908d091b313" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/clients/data.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/clients/explanation.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/loggers/csv_logger.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/txts/sample.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/broker_interact.py" beforeDir="false" afterPath="$PROJECT_DIR$/broker_interact.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/clients/client_mqtt.py" beforeDir="false" afterPath="$PROJECT_DIR$/clients/client_mqtt.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/clients/client_plain.py" beforeDir="false" afterPath="$PROJECT_DIR$/clients/client_plain.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/loggers/file_logger.py" beforeDir="false" afterPath="$PROJECT_DIR$/loggers/file_logger.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/loggers/logs_csv/log_11_2022.csv" beforeDir="false" afterPath="$PROJECT_DIR$/loggers/logs_csv/log_11_2022.csv" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
