@@ -1,7 +1,16 @@
 # Clients explanation
-The two clients separate the functionality, which technically can be implemented with only one. A clearer description below 
+The two clients separate the functionality, which technically can be implemented with only one. A clearer description is present below. There is also a class which enforces a standard for data across the whole application
+*Note: logging will not be mentioned for most functions, but if you run the code it will be there*
+## Data
+This class has no methods, only variables. This makes sure everyone on the team uses the same input and output.
+The member variables are as follows: 
+- `device_id` - the name of the device
+- `pressure`, `temperature`, `light` - the extracted payload (reference `MQTTClient` -> `Functions`) information 
+- `datetime` - the time retrieved from the client 
+- `consimed_airtime` - travel time of the packet 
+- `latitude`, `longitude`, `altitude` - location of the sensor
 
-## ClientPlaintext
+## ClientPlain
 This client is mainly for data storage and tracking of IDs
 
 ### Variables
@@ -31,5 +40,31 @@ Receives data from an MQTT broker and cleans it up so that out `BrokerInteract` 
 - `__client` - the stock client implementation; has to be static because of `__self__`
 
 2. Instance variables
-`__plaintext`, `__id`
-Self-explanatory, check the source code if interested
+- `__plaintext` - a plaintext client, stores the client details
+- `__id` - equal to `__plaintext` ID
+
+### Functions
+This is the most important part of the directory, because these functions are responsible for interfacing with the broker and decoding the message.
+1. Static functions
+- `decode` - (see also `txts`->`example_data.json`) this method has 3 steps i. Type change/cleanup - the input data changes types from `bytes` to `string` to `json`
+ii. Data extraction - the data is extracted from the `json`
+iii. Data entry - the data is entered into a `Data object` and returned
+
+2. Instance functions
+- `constructor` - initializes instance values and sets the password and username of the client
+
+3. Client handling functions
+- `connect` - connect to the `plaintext`'s host and port (set `keepalive` (max time between messages/pings) to 60 seconds) 
+- `disconnect` - a simple `disconnect()` call to the `__client`
+- `subscribe` - subscribes to a specified topic with *quality of service* (QoS) beteween 0 and 2 (for our `decoder` to work optimally, a QoS of 0 is advised)
+
+4. Loop functions
+`loop_forever`, `loop_start`, `loop_stop` are all implemented and are exactly the same as the default implementation (see `paho-mqtt` in PyPi)
+   
+5. Callback functions
+These have the syntax `_on_function` and are called every time `function` is called
+- `_on_message` - decodes the message and logs it
+- `_on_connect` - connect, unless the connection is bad (in which case disconnect)
+- `_on_disconnect` - not much was added (aside from logging)~~~~
+
+

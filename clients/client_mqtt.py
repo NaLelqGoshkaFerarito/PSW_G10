@@ -52,27 +52,31 @@ class ClientMQTT:
 
     # decoding should be accessible as a static method
     @staticmethod
-    def decode(input):
+    def decode(received_data):
         # input is in the form of a bytes object, turn it into a string
-        msg_str = input.decode("utf-8").replace("'", '"')
+        msg_str = received_data.decode("utf-8").replace("'", '"')
         ClientMQTT.__logger.log(msg_str)
         # turn that string into a json (basically a dictionary)
         msg_json = json.loads(msg_str)
+
         # dictionary within a dictionary
-        data_json_1 = msg_json["uplink_message"]
+        uplink_message = msg_json["uplink_message"]
         time = msg_json["received_at"]
-        # dictionary within a dictionary within a dictionary
-        decoded_payload = data_json_1["decoded_payload"]
-        rx_metadata = data_json_1["rx_metadata"]
-        # rx_metadata is a list of length 1 for some reason
+        # most important data in here
+        decoded_payload = uplink_message["decoded_payload"]
+        # rx_metadata is a list (of length 1)
+        rx_metadata = uplink_message["rx_metadata"]
         location = rx_metadata[0]["location"]
         # get the list of gateway IDs (length 1) and extract the ID from there
         gateway_id = rx_metadata[0]["gateway_ids"]["gateway_id"]
         location_latitude = location["latitude"]
         location_longitude = location["longitude"]
         location_altitude = location["altitude"]
+        airtime = uplink_message["consumed_airtime"]
+
         data = Data()
         # store the data in a predefined data object
+        data.device_id = gateway_id.__str__()
         data.pressure = decoded_payload["pressure"].__str__()
         data.light = decoded_payload["light"].__str__()
         data.temperature = decoded_payload["temperature"].__str__()
@@ -80,6 +84,7 @@ class ClientMQTT:
         data.longitude = location_longitude.__str__()
         data.latitude = location_latitude.__str__()
         data.altitude = location_altitude.__str__()
+        data.consumed_airtime = airtime.__str__()
         return data
 
     # note: topic can be an array of (topic = string, qos = int) tuples if you want to connect to multiple topics

@@ -18,8 +18,8 @@ class CSVLogger(ILogger):
         if type(data) == Data:
             with open("./loggers/logs_csv/" + self.__file_name, "a") as file:
                 writer = csv.writer(file)
-                # writes light, temperature, pressure, time of measurement, three rows on location, time of reading
-                writer.writerow([data.light, data.temperature, data.pressure, data.datetime, data.latitude, data.longitude, data.altitude, datetime.now().strftime("%m/%d/%Y, %H:%M:%S")])
+                # writes device_id, light, temperature, pressure, three rows on location, time of measurement, time of reading and travel time
+                writer.writerow([data.device_id, data.light, data.temperature, data.pressure, data.latitude, data.longitude, data.altitude, data.datetime, datetime.now().strftime("%m/%d/%Y, %H:%M:%S"), data.consumed_airtime])
         # else print it for debugging
         else:
             CSVLogger.__console_logger.log(data)

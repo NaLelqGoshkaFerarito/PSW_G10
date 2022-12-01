@@ -8,18 +8,14 @@ import time
 import json
 from loggers.csv_logger import CSVLogger
 from clients.data import Data
-from broker_interact import BrokerInteract
 
-bi = BrokerInteract()
-bi.start()
-while True:
-    pass
-# cp = ClientPlain()
-# mqtt = ClientMQTT(cp)
-# mqtt.connect()
-# msg = mqtt.subscribe("v3/project-software-engineering@ttn/devices/py-wierden/up")
-# mqtt.loop_start()
+# bi = BrokerInteract()
+# bi.start()
 # while True:
 #     pass
-# mqtt.loop_forever()
+cp = ClientPlain()
+mqtt = ClientMQTT(cp)
+mqtt.connect()
+msg = mqtt.subscribe("v3/project-software-engineering@ttn/devices/py-wierden/up")
+mqtt.loop_forever()
 

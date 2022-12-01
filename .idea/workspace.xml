@@ -2,10 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="87a6232f-ef40-4ab2-9d4c-b908d091b313" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/txts/example_data.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/broker_interact.py" beforeDir="false" afterPath="$PROJECT_DIR$/broker_interact.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/broker_interact.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/clients/client_mqtt.py" beforeDir="false" afterPath="$PROJECT_DIR$/clients/client_mqtt.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/loggers/logs_csv/log_11_2022.csv" beforeDir="false" afterPath="$PROJECT_DIR$/loggers/logs_csv/log_11_2022.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/clients/data.py" beforeDir="false" afterPath="$PROJECT_DIR$/clients/data.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/clients/explanation.md" beforeDir="false" afterPath="$PROJECT_DIR$/clients/explanation.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/loggers/csv_logger.py" beforeDir="false" afterPath="$PROJECT_DIR$/loggers/csv_logger.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -33,6 +36,7 @@
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../mqtt_git" />
+    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -89,6 +93,13 @@
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/clients/client_mqtt.py</url>
+          <line>54</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
       <default-breakpoints>
         <breakpoint type="python-exception">
           <properties notifyOnTerminate="true" exception="BaseException">
