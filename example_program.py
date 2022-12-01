@@ -9,13 +9,12 @@ import json
 from loggers.csv_logger import CSVLogger
 from clients.data import Data
 
-# bi = BrokerInteract()
-# bi.start()
-# while True:
-#     pass
 cp = ClientPlain()
 mqtt = ClientMQTT(cp)
 mqtt.connect()
 msg = mqtt.subscribe("v3/project-software-engineering@ttn/devices/py-wierden/up")
-mqtt.loop_forever()
+mqtt.run()
+
+
+
 

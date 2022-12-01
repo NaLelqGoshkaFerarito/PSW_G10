@@ -1,4 +1,5 @@
 import paho.mqtt.client as mqtt
+import socket
 from clients.client_plain import ClientPlain
 from loggers.console_logger import ConsoleLogger
 from loggers.csv_logger import CSVLogger
@@ -11,12 +12,15 @@ class ClientMQTT:
     __logger = CSVLogger()
     # ideally this line would be in the init method but then python doesnt let me assign the callbacks
     __client = mqtt.Client()
+    # times out after __connection_timeout packets are received
+    __connection_timeout = 10
 
     def __init__(self, cp):
         # plaintext and MQTT ID should match
         self.__id = cp.count_of_clients()
         self.__plaintext = cp
         self.__client.username_pw_set(self.__plaintext.username(), self.__plaintext.password())
+        # default connection timeout on 10 packets
         ClientMQTT.__logger.log("MQTT client created from (Plaintext ID: " + self.__id.__str__() + ")")
 
     # this code is going to be executed every time an attempt to connect is made
@@ -41,10 +45,12 @@ class ClientMQTT:
         ClientMQTT.__logger.log("Status: " + mqtt.connack_string(rc))
 
     def disconnect(self):
-        self.__client.disconnect()
+        self.__connection_timeout = 1
 
     def _on_message(client, userdata, message):
-        ClientMQTT.__logger.log("Received message")
+        # decrement the connection timeout
+        ClientMQTT.__connection_timeout -= 1
+        ClientMQTT.__logger.log("Received message, " + ClientMQTT.__connection_timeout.__str__() + " to timeout")
         msg_decoded = ClientMQTT.decode(message.payload)
         ClientMQTT.__logger.log("Decoded message, logging")
         # logs to a csv file
@@ -94,15 +100,24 @@ class ClientMQTT:
         # v3/project-software-engineering@ttn/devices/py-wierden/up is what the MQTT explorer gave me so I'll use that
         return self.__client.subscribe(topic, qos)
 
-    def loop_start(self):
-        self.__client.loop_start()
-
-    def loop_stop(self):
-        self.__client.loop_stop()
-
     def loop_forever(self):
         self.__client.loop_forever()
 
     __client.on_connect = _on_connect
     __client.on_disconnect = _on_disconnect
     __client.on_message = _on_message
+
+    def read(self):
+        ClientMQTT.__client.loop_read()
+
+    # defines how many packets the client wants to receive before disconnecting
+    def connection_timeout(self, num_of_packets):
+        self.__connection_timeout = num_of_packets
+
+    def run(self):
+        # open a socket for the read
+        self.__client.socket().setsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF, 2048)
+        # the code basically closes the connection before exiting the read loop
+        while self.__connection_timeout > 0:
+            self.read()
+        self.__client.disconnect()
