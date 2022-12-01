@@ -1,116 +1,105 @@
 import tkinter as tk
 import pandas as pd
 import math
+import random
 import matplotlib.pyplot as plt
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import webbrowser
 
-sensor1 = []
-sensor2 = []
-sensor1humidity = []
-time = []
-for i in range(24):
-    sensor1.append(math.sin(i/5) * 5 + 14)
-    sensor2.append(math.cos(i/5) * 5 + 13)
-    sensor1humidity.append(i * 4)
-    time.append(i)
+
+sensors = ['sensor1', 'sensor2'] 
+metrics = ['Temperature', 'Humidity']
+period = [0, 1]  #list of dates, measures between these dates gonna be plotted
+number = 0    #represent chosen metrics if 0 it will plot temperature and so on
 
 
-data = {'Temperature': sensor1,
-         'Humidity' : sensor1humidity,        
-         'Time': time
-         }
-df = pd.DataFrame(data)
 
-data2 = {'Temperature': sensor2,
-         'Humidity' : sensor1humidity,        
-         'Time': time
-         }
-df2 = pd.DataFrame(data2)
+class SensorData:   #class that contains all values for given sensors in given period
+    def __init__(self, period, sensorid):
+        self.start = period[0]
+        self.end = period[-1]
+        self.sensor_id = sensorid
+        self.dataframe = pd.DataFrame({'Temperature' : random.sample(range(15, 25), 4), 'Time' : range(1, 5)})
 
-dfs = [df, df2]
+
+def onselect(evt, window):
+    window.changeplot(number, period)
+    window.changetext()
+    
+
+
+
+class MyWindow:  #main window
+    def __init__(self, master=None ,*args, **kwargs):
+        #frames
+        self.frame0 = tk.Frame(master=master)
+        self.frame0.grid(row = 0, column = 0)
+
+        self.frame1 = tk.Frame(master=master)
+        self.frame1.grid(row=0, column=1)
+        #listbox
+
+        self.lb = tk.Listbox(self.frame0, selectmode=tk.MULTIPLE)
+        for i in range(len(sensors)):
+            self.lb.insert('end', sensors[i])
+        self.lb.grid(row=0, column=0, sticky='wnes')
+        self.lb.bind('<<ListboxSelect>>', lambda event: onselect(event, self))
+
+        #plot
+        self.figure = plt.Figure(figsize=(5, 4), dpi=100)
+        self.ax = self.figure.add_subplot(111)
+        self.line = FigureCanvasTkAgg(self.figure, self.frame1)
+        self.line.get_tk_widget().grid(row=0, column=0)
+
+        #radio button
+        self.r_button_val = tk.IntVar()
+        for i in range(len(metrics)):
+            tk.Radiobutton(self.frame1, text = f'{metrics[i]}', variable = self.r_button_val, value = i).grid(row=i + 1, column=0)
+
+        #status bar
+        self.status = tk.Label(master, text="Updated 2 minutes ago (not really)", bd = 1, relief='sunken', anchor = 'e')
+        self.status.grid(row=2, column=0, columnspan=2, sticky='we')
+
+
+        #information text
+        self.text = tk.Text(self.frame0, height = 3)
+        self.text.grid(row=1, column=0, sticky='s')
+    
+    
+
+    def changeplot(self, number, period):
+        sensors_ = []
+        for item in self.lb.curselection():
+            sensors_.append(item)
+            print(item)
+        plt.clf()
+        for sensor in sensors_:
+            dff = SensorData(period, sensors[sensor])
+            dff = dff.dataframe[['Time', metrics[number]]].groupby('Time').sum()
+            dff.plot(kind='line', legend=True, ax=self.ax, color='r', marker='o', fontsize=10)
+        self.ax.set_title(f'Time Vs. {metrics[number]}')
+        self.line.draw()
+        self.ax.clear()
+
+
+    def changetext(self):
+        self.text.config(state='normal')
+        self.text.delete("1.0", tk.END)
+        sensors_ = []
+        for item in self.lb.curselection():
+            sensors_.append(sensors[item])
+        for i in sensors_:
+            self.text.insert(tk.END, f"{i} last measures:\n")
+            for j in metrics:
+                self.text.insert(tk.END, f"{j} - TO DO LATER\n")
+
+
+    
+    
+    
+
+
 root = tk.Tk()
+app = MyWindow(master = root)
 
-def changeplot(line, frame, number):
-
-    if number == 0:
-    
-        plt.clf()
-        dff = frame[['Time', 'Temperature']].groupby('Time').sum()
-        dff.plot(kind='line', legend=True, ax=ax, color='r', marker='o', fontsize=10)
-        
-        ax.set_title('Time Vs. Temperature')
-        line.draw()
-        ax.clear()
-    
-    elif number == 1:
-    
-        plt.clf()
-        dff = frame[['Time', 'Humidity']].groupby('Time').sum()
-        dff.plot(kind='line', legend=True, ax=ax, color='g', marker='o', fontsize=10)
-        ax.set_title('Time Vs. Humidity')
-        line.draw()
-        ax.clear()
-    
-def callback(url):
-    webbrowser.open_new(url)
-
-def onselect(evt):
-    # Note here that Tkinter passes an event object to onselect()
-    w = evt.widget
-    index = int(w.curselection()[0])
-    changeplot(line, dfs[index], r.get())
-
-
-    
-
-
-# figure = plt.Figure(figsize=(6,5), dpi=100)
-# ax = figure.add_subplot(111)
-# chart_type = FigureCanvasTkAgg(figure, root)
-# chart_type.get_tk_widget().pack()
-# df = df[['First Column','Second Column']].groupby('First Column').sum()
-# df.plot(kind='Chart Type such as bar', legend=True, ax=ax)
-# ax.set_title('The Title for your chart')
-
-
-chosen = 0
-items = ['sensor1', 'sensor2']
-
-
-
-listbox = tk.Listbox(root)
-listbox.insert('end', 'sensor1')
-listbox.insert('end', 'sensor2')
-listbox.grid(row=0, column=0)
-listbox.bind('<<ListboxSelect>>', onselect)
-
-#root.geometry('800x600+10+10')
-
-frame = tk.Frame(root)
-frame.grid(row=0, column=1, rowspan=2, sticky='e')
-
-status = tk.Label(root, text="Updated 2 minutes ago (not really)", bd = 1, relief='sunken', anchor = 'e')
-status.grid(row=2, column=0, columnspan=2, sticky='we')
-
-figure = plt.Figure(figsize=(5, 4), dpi=100)
-ax = figure.add_subplot(111)
-line = FigureCanvasTkAgg(figure, frame)
-line.get_tk_widget().grid(row=0, column=0)#pack(side=tk.LEFT, fill=tk.BOTH)
-# df3 = df2[['Time', 'Temperature']].groupby('Time').sum()
-# df3.plot(kind='line', legend=True, ax=ax2, color='r', marker='o', fontsize=10)
-# ax2.set_title('Time Vs. Temperature')
-
-r = tk.IntVar()
-#r.set(0)
-tk.Radiobutton(frame, text = 'Temperature', variable = r, value = 0, command=lambda: changeplot(line, dfs[items.index(listbox.get('anchor'))], r.get())).grid(row=1, column=0)
-tk.Radiobutton(frame, text = 'Humidity', variable = r, value = 1, command=lambda: changeplot(line, dfs[items.index(listbox.get('anchor'))], r.get())).grid(row=2, column=0)
-
-text = tk.Text(root, height = 3)
-text.grid(row=1, column=0)
-text.insert(tk.END, "Temperature - " + str(sensor1[-1]))
-
-link1 = tk.Label(frame, text="Coordinates: 52°13'16.9\"N 6°53'11.2\"E", fg="blue", cursor="hand2")
-link1.grid(row=3, column=0)
-link1.bind("<Button-1>", lambda e: callback("https://www.google.com/maps/place/52°13'16.9\"N+6°53'11.2\"E/"))
 root.mainloop()
