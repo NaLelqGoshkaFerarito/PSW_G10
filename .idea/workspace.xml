@@ -1,12 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="87a6232f-ef40-4ab2-9d4c-b908d091b313" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/clients/client_mqtt.py" beforeDir="false" afterPath="$PROJECT_DIR$/clients/client_mqtt.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/clients/explanation.md" beforeDir="false" afterPath="$PROJECT_DIR$/clients/explanation.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example_program.py" beforeDir="false" afterPath="$PROJECT_DIR$/example_program.py" afterDir="false" />
-    </list>
+    <list default="true" id="87a6232f-ef40-4ab2-9d4c-b908d091b313" name="Default Changelist" comment="Last commit was partial" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -73,6 +68,14 @@
       <option name="presentableId" value="Default" />
       <updated>1669377782920</updated>
     </task>
+    <task id="LOCAL-00001" summary="Last commit was partial">
+      <created>1669883048910</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1669883048910</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -89,6 +92,10 @@
       </map>
     </option>
     <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Last commit was partial" />
+    <option name="LAST_COMMIT_MESSAGE" value="Last commit was partial" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
