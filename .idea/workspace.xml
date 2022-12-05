@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="87a6232f-ef40-4ab2-9d4c-b908d091b313" name="Default Changelist" comment="Last commit was partial">
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="87a6232f-ef40-4ab2-9d4c-b908d091b313" name="Default Changelist" comment="Optimized logging&#10;- csv_logger - changed the logging for easier processing">
+      <change afterPath="$PROJECT_DIR$/wsgi.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example_program.py" beforeDir="false" afterPath="$PROJECT_DIR$/example_program.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/loggers/csv_logger.py" beforeDir="false" afterPath="$PROJECT_DIR$/loggers/csv_logger.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/example_program.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/loggers/logs_csv/log_12_2022.csv" beforeDir="false" afterPath="$PROJECT_DIR$/loggers/logs_csv/log_12_2022.csv" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -21,6 +21,14 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
   </component>
   <component name="ProjectId" id="2I2RdzjQg6XKIM1iBKAV3TzJXE1" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -42,7 +50,7 @@
     </key>
   </component>
   <component name="RunManager">
-    <configuration name="example_program" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
+    <configuration name="wsgi" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="mqtt_beta" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -54,7 +62,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="C:\Y2\Q2\ProjSW\mqtt_beta\example_program.py" />
+      <option name="SCRIPT_NAME" value="C:\Y2\Q2\ProjSW\mqtt_beta\wsgi.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -80,7 +88,14 @@
       <option name="project" value="LOCAL" />
       <updated>1669883048910</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Optimized logging&#10;- csv_logger - changed the logging for easier processing">
+      <created>1669970131089</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1669970131089</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="UnknownFeatures">
@@ -100,7 +115,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Last commit was partial" />
-    <option name="LAST_COMMIT_MESSAGE" value="Last commit was partial" />
+    <MESSAGE value="Optimized logging&#10;- csv_logger - changed the logging for easier processing" />
+    <option name="LAST_COMMIT_MESSAGE" value="Optimized logging&#10;- csv_logger - changed the logging for easier processing" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
