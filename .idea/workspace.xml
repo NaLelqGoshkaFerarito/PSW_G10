@@ -2,10 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="87a6232f-ef40-4ab2-9d4c-b908d091b313" name="Default Changelist" comment="Optimized logging&#10;- csv_logger - changed the logging for easier processing">
-      <change afterPath="$PROJECT_DIR$/wsgi.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.name" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.name" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/example_program.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/loggers/logs_csv/log_12_2022.csv" beforeDir="false" afterPath="$PROJECT_DIR$/loggers/logs_csv/log_12_2022.csv" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/loggers/csv_logger.py" beforeDir="false" afterPath="$PROJECT_DIR$/loggers/csv_logger.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
