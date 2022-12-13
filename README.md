@@ -2,7 +2,7 @@
 Repo for Project Software (Group 10)
 
 # Clients explanation
-For a quick start read `MQTTClient` -> `Functions` -> `6. Interface functions`
+For a quick start read `MQTTClient` -> `Functions` -> `6. Interface functions` and `Example code`
 The two clients separate the functionality, which technically can be implemented with only one. A clearer description is present below. There is also a class which enforces a standard for data across the whole application
 *Note: logging will not be mentioned for most functions, but if you run the code it will be there*
 ## Data
@@ -75,6 +75,20 @@ These have the syntax `_on_function` and are called every time `function` is cal
 6. Interface functions
 - `connection_timeout` - set how many packets to read before disconnecting (setter for `connection_timeout`)
 - `run` - run the read loop after `__connection_timeout` is set
+
+### Example Code
+```python
+cp = ClientPlain()
+mqtt = ClientMQTT(cp)
+mqtt.connect()
+msg = mqtt.subscribe("v3/project-software-engineering@ttn/devices/py-wierden/up")
+# set the number of messages to be received before disconnecting
+mqtt.connection_timeout(1)
+mqtt.run()
+```
+*Note: For more detailed explanations reference the appropriate chapters*
+
+The program creates a default plaintext broker (we only need a default constructor, because the broker used is always the same). This broker gives the necessary data to the MQTT broker class, which interfaces with the broker. It provides us with a function to set the number of packets to receive before disconnecting. It also provides a run function, which will automatically disconnect after the packets are recieved.
 
 # API
 For the time being the server application we are using requires the user to open the site manually at least once and dismiss the message.

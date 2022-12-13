@@ -15,8 +15,8 @@ from clients.data import Data
 #     pass
 cp = ClientPlain()
 mqtt = ClientMQTT(cp)
-# set the number of messages to be received before disconnecting
 mqtt.connect()
 msg = mqtt.subscribe("v3/project-software-engineering@ttn/devices/py-wierden/up")
+# set the number of messages to be received before disconnecting
 mqtt.connection_timeout(1)
 mqtt.run()
