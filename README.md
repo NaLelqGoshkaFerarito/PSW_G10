@@ -11,7 +11,7 @@ The member variables are as follows:
 - `device_id` - the name of the device
 - `pressure`, `temperature`, `light` - the extracted payload (reference `MQTTClient` -> `Functions`) information 
 - `datetime` - the time retrieved from the client 
-- `consimed_airtime` - travel time of the packet 
+- `consumed_airtime` - travel time of the packet 
 - `latitude`, `longitude`, `altitude` - location of the sensor
 
 ## ClientPlain
