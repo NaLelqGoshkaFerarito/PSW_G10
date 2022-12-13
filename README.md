@@ -78,6 +78,9 @@ These have the syntax `_on_function` and are called every time `function` is cal
 
 ### Example Code
 ```python
+from clients.client_plain import ClientPlain
+from clients.client_mqtt import ClientMQTT
+
 cp = ClientPlain()
 mqtt = ClientMQTT(cp)
 mqtt.connect()
