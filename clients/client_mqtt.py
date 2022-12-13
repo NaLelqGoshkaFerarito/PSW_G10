@@ -35,14 +35,9 @@ class ClientMQTT:
     def connect(self):
         self.__client.connect(self.__plaintext.host(), self.__plaintext.port(), 60)
 
-    # this code is going to be executed on every disconnect,
-    # even if it doesnt go through the ClientMQTT.disconnect function
+    # this code is going to be executed on every disconnect
     def _on_disconnect(client, userdata, rc):
-        if rc != 0:
-            ClientMQTT.__logger.log("Unexpected disconnection")
-            return
         ClientMQTT.__logger.log("Disconnecting...")
-        ClientMQTT.__logger.log("Status: " + mqtt.connack_string(rc))
 
     def disconnect(self):
         self.__connection_timeout = 1
@@ -118,6 +113,6 @@ class ClientMQTT:
         # open a socket for the read
         self.__client.socket().setsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF, 2048)
         # the code basically closes the connection before exiting the read loop
-        while self.__connection_timeout > 0:
+        while self.__connection_timeout >= 0:
             self.read()
         self.__client.disconnect()
