@@ -73,16 +73,17 @@ def drop_table():
 
 # LOCAL TESTING:
 #conn = MySQLdb.connect(host="localhost", user="root", password="kaas", database="mydatabase")
+if __name__ == "__main__":
+    conn = MySQLdb.connect(host="139.144.177.81", user="jesse", password="Kaas@1234", database="mydatabase")
+    cursor = conn.cursor()
 
-conn = MySQLdb.connect(host="139.144.177.81", user="jesse", password="Kaas@1234", database="mydatabase")
-cursor = conn.cursor()
+    csv_data = csv.reader(open('log_12_2022(1).csv'))
+    print('Importing the CSV Files')
 
-csv_data = csv.reader(open('log_12_2022(1).csv'))
-print('Importing the CSV Files')
 
-create_database()
-create_tables()
-insert_data()
-conn.commit()
-cursor.close()
-print('Done')
+    create_database()
+    create_tables()
+    insert_data()
+    conn.commit()
+    cursor.close()
+    print('Done')
