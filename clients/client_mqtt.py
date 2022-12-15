@@ -12,8 +12,6 @@ class ClientMQTT:
     __logger = CSVLogger()
     # ideally this line would be in the init method but then python doesnt let me assign the callbacks
     __client = mqtt.Client()
-    # times out after __connection_timeout packets are received
-    __connection_timeout = 10
 
     def __init__(self, cp):
         # plaintext and MQTT ID should match
@@ -43,9 +41,8 @@ class ClientMQTT:
         self.__connection_timeout = 1
 
     def _on_message(client, userdata, message):
-        # decrement the connection timeout
-        ClientMQTT.__connection_timeout -= 1
-        ClientMQTT.__logger.log("Received message, " + ClientMQTT.__connection_timeout.__str__() + " to timeout")
+
+        ClientMQTT.__logger.log("Received message")
         msg_decoded = ClientMQTT.decode(message.payload)
         ClientMQTT.__logger.log("Decoded message, logging")
         # logs to a csv file
@@ -102,17 +99,3 @@ class ClientMQTT:
     __client.on_disconnect = _on_disconnect
     __client.on_message = _on_message
 
-    def read(self):
-        ClientMQTT.__client.loop_read()
-
-    # defines how many packets the client wants to receive before disconnecting
-    def connection_timeout(self, num_of_packets):
-        self.__connection_timeout = num_of_packets
-
-    def run(self):
-        # open a socket for the read
-        self.__client.socket().setsockopt(socket.SOL_SOCKET, socket.SO_SNDBUF, 2048)
-        # the code basically closes the connection before exiting the read loop
-        while self.__connection_timeout >= 0:
-            self.read()
-        self.__client.disconnect()

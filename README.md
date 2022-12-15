@@ -2,7 +2,8 @@
 Repo for Project Software (Group 10)
 
 # Clients explanation
-For a quick start read `MQTTClient` -> `Functions` -> `6. Interface functions` and `Example code`
+For a quick start read `Example code`
+
 The two clients separate the functionality, which technically can be implemented with only one. A clearer description is present below. There is also a class which enforces a standard for data across the whole application
 *Note: logging will not be mentioned for most functions, but if you run the code it will be there*
 ## Data
@@ -42,7 +43,6 @@ Receives data from an MQTT broker and cleans it up so that out `BrokerInteract` 
 1. Static variables
 - `__logger` - analogous to ClientPlain
 - `__client` - the stock client implementation; has to be static because of `__self__`
-- `__connection_timeout` - number of packets to receive before timeout (for exact number and recommended settings reference the implementation)
 
 2. Instance variables
 - `__plaintext` - a plaintext client, stores the client details
@@ -61,7 +61,6 @@ iii. Data entry - the data is entered into a `Data object` and returned
 3. Client handling functions
 - `connect` - connect to the `plaintext`'s host and port (set `keepalive` (max time between messages/pings) to 60 seconds) 
 - `subscribe` - subscribes to a specified topic with *quality of service* (QoS) beteween 0 and 2 (for our `decoder` to work optimally, a QoS of 0 is advised)
-- `read` - reads input as the socket is assumed to be an input socket
 
 4. Loop functions
 `loop_forever`is implemented and is exactly the same as the default implementation (see `paho-mqtt` in PyPi)
@@ -72,26 +71,22 @@ These have the syntax `_on_function` and are called every time `function` is cal
 - `_on_connect` - connect, unless the connection is bad (in which case disconnect)
 - `_on_disconnect` - not much was added (aside from logging)
 
-6. Interface functions
-- `connection_timeout` - set how many packets to read before disconnecting (setter for `connection_timeout`)
-- `run` - run the read loop after `__connection_timeout` is set
 
 ### Example Code
 ```python
 from clients.client_plain import ClientPlain
 from clients.client_mqtt import ClientMQTT
 
+# always the same
 cp = ClientPlain()
 mqtt = ClientMQTT(cp)
 mqtt.connect()
 msg = mqtt.subscribe("v3/project-software-engineering@ttn/devices/py-wierden/up")
-# set the number of messages to be received before disconnecting
-mqtt.connection_timeout(1)
-mqtt.run()
+mqtt.loop_forever()
 ```
 *Note: For more detailed explanations reference the appropriate chapters*
 
-The program creates a default plaintext broker (we only need a default constructor, because the broker used is always the same). This broker gives the necessary data to the MQTT broker class, which interfaces with the broker. It provides us with a function to set the number of packets to receive before disconnecting. It also provides a run function, which will automatically disconnect after the packets are recieved.
+The program creates a default plaintext broker (we only need a default constructor, because the broker used is always the same). This broker gives the necessary data to the MQTT broker class, which interfaces with the broker. It then runs indefinitely and logs data in the meantime.
 
 # API
 For the time being the server application we are using requires the user to open the site manually at least once and dismiss the message.

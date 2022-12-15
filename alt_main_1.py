@@ -5,5 +5,5 @@ from clients.client_mqtt import ClientMQTT
 cp = ClientPlain()
 mqtt = ClientMQTT(cp)
 mqtt.connect()
-msg = mqtt.subscribe("v3/project-software-engineering@ttn/devices/py-wierden/up")
+msg = mqtt.subscribe("v3/project-software-engineering@ttn/devices/py-saxion/up")
 mqtt.loop_forever()
