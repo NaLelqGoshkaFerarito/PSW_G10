@@ -94,10 +94,13 @@ The final base url is not decided yet, but it will be in the format `https://105
 
 ## Endpoints 
 ### Default
-Gets a JSON containing a single log from the database in the form of a dictionary (database interaction TBA; uses the csv logs for now).
-Can be accessed at `base-url/`
+Just a smiley
 
-### Multiple
-Gets a JSON containing `NUM_OF_TIMES` logs from the database in the form of a dictionary (database interaction TBA; uses the csv logs for now).
-Can be accessed at `base-url/messages/?times=NUM_OF_TIMES`
+### Get devices
+Gets a JSON containing `NUM_OF_DEVS` devices from the database in the form of a dictionary.
+Can be accessed at `base-url/devices/?number=NUM_OF_STATS`.
+
+### Get statuses
+Gets a JSON containing `NUM_OF_STATS` logs from the database in the form of a dictionary.
+Can be accessed at `base-url/statuses/?number=NUM_OF_STATS`.
 

@@ -1,7 +1,8 @@
 from flask import *
 from datetime import datetime
 import csv
-import json, time
+import json
+import MySQLdb
 from clients.client_mqtt import ClientMQTT
 from clients.client_plain import ClientPlain
 
@@ -9,7 +10,52 @@ from clients.client_plain import ClientPlain
 app = Flask(__name__)
 
 
-def get_messages(count):
+def get_devices(count):
+    # database interaction setup
+    conn = MySQLdb.connect(host="139.144.177.81", user="jesse", password="Kaas@1234", database="mydatabase")
+    cursor = conn.cursor()
+    cursor.execute("SELECT * from device")
+    rows_device = cursor.fetchall()
+
+    output = dict()
+
+    lines = count
+    for row in rows_device:
+        # if row is an actual row
+        if len(row) > 3:
+            if lines > 0:
+                data_row = {'device_id': f'{row[0]}', 'name': f'{row[1]}',
+                            'coordinate': f'{row[2]}', 'altitude': f'{row[3]}'}
+                # dictionary looks like number: data
+                output[f'{count - lines}'] = f'data_row: {data_row.__str__()}'
+            lines -= 1
+    # return the string with ' quotes because the other ones need to be excaped with \
+    return f'{output.__str__()}'.replace('"', "'")
+
+def get_statuses(count):
+    # database interaction setup
+    conn = MySQLdb.connect(host="139.144.177.81", user="jesse", password="Kaas@1234", database="mydatabase")
+    cursor = conn.cursor()
+    cursor.execute("SELECT * from status")
+    rows_status = cursor.fetchall()
+
+    output = dict()
+
+    lines = count
+    for row in rows_status:
+        # if row is an actual row
+        if len(row) > 3:
+            if lines > 0:
+                data_row = {'status_id': f'{row[0]}', 'device_id': f'{row[1]}', 'temperature': f'{row[2]}',
+                            'pressure': f'{row[3]}', 'humidity': f'{row[4]}', 'light': f'{row[5]}',
+                            'time': f'{row[6]}'}
+                # dictionary looks like number: data
+                output[f'{count - lines}'] = f'data_row: {data_row.__str__()}'
+            lines -= 1
+    # return the string with ' quotes because the other ones need to be excaped with \
+    return f'{output.__str__()}'.replace('"', "'")
+
+def get_messages_deprecated(count):
     output = dict()
     # open this month's file
     with open(datetime.now().strftime("loggers/logs_csv/log_%m_%Y.csv")) as csv_file:
@@ -33,15 +79,23 @@ def get_messages(count):
 # get last message
 @app.route("/")
 def default():
-    return json.dumps(get_messages(1))
+    return "<p>Hi :D</p>"
+
+
+# get a number of devices
+@app.route("/devices/")
+def number_of_devices():
+    # ask for input in the format "/devices/?number=NUM_OF_DEVICES"
+    query = int(request.args.get("number"))
+    return json.dumps(get_devices(query))
 
 
 # get a number of messages
-@app.route("/messages/")
-def number_of_times():
-    # ask for input in the format "/messages/?times=NUM_OF_TIMES"
-    query = int(request.args.get("times"))
-    return json.dumps(get_messages(query))
+@app.route("/statuses/")
+def number_of_statuses():
+    # ask for input in the format "/statuses/?number=NUM_OF_STATUSES"
+    query = int(request.args.get("number"))
+    return json.dumps(get_statuses(query))
 
 
 if __name__ == "__main__":
