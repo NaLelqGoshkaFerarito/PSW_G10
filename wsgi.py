@@ -30,6 +30,7 @@ def get_devices(count):
                 output[f'{count - lines}'] = f'data_row: {data_row.__str__()}'
             lines -= 1
     # return the string with ' quotes because the other ones need to be excaped with \
+    cursor.close()
     return f'{output.__str__()}'.replace('"', "'")
 
 def get_statuses(count):
@@ -53,6 +54,7 @@ def get_statuses(count):
                 output[f'{count - lines}'] = f'data_row: {data_row.__str__()}'
             lines -= 1
     # return the string with ' quotes because the other ones need to be excaped with \
+    cursor.close()
     return f'{output.__str__()}'.replace('"', "'")
 
 def get_messages_deprecated(count):
