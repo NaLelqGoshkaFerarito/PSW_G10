@@ -5,11 +5,12 @@ from loggers.console_logger import ConsoleLogger
 from loggers.csv_logger import CSVLogger
 from clients.data import Data
 import json
+from loggers.db_logger import DBLogger
 
 
 # provides an implementation of the MQTT client
 class ClientMQTT:
-    __logger = CSVLogger()
+    __logger = DBLogger()
     # ideally this line would be in the init method but then python doesnt let me assign the callbacks
     __client = mqtt.Client()
 
@@ -78,7 +79,10 @@ class ClientMQTT:
         data.pressure = decoded_payload["pressure"].__str__()
         data.light = decoded_payload["light"].__str__()
         data.temperature = decoded_payload["temperature"].__str__()
-        data.datetime = time.__str__()
+        # time in format 2022-12-16T09:53:30.131080123Z, needs parsing
+        temp_time = time.__str__()
+        temp_time2 = temp_time.replace("T", " ")
+        data.datetime = temp_time2.split(".")[0]
         data.longitude = location_longitude.__str__()
         data.latitude = location_latitude.__str__()
         data.altitude = location_altitude.__str__()
