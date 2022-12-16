@@ -12,7 +12,7 @@ app = Flask(__name__)
 
 def get_devices(count):
     # database interaction setup
-    conn = MySQLdb.connect(host="139.144.177.81", user="jesse", password="Kaas@1234", database="mydatabase")
+    conn = MySQLdb.connect(host="139.144.177.81", user="ADMIN", password="", database="mydatabase")
     cursor = conn.cursor()
     cursor.execute("SELECT * from device")
     rows_device = cursor.fetchall()
@@ -34,7 +34,7 @@ def get_devices(count):
 
 def get_statuses(count):
     # database interaction setup
-    conn = MySQLdb.connect(host="139.144.177.81", user="jesse", password="Kaas@1234", database="mydatabase")
+    conn = MySQLdb.connect(host="139.144.177.81", user="ADMIN", password="", database="mydatabase")
     cursor = conn.cursor()
     cursor.execute("SELECT * from status")
     rows_status = cursor.fetchall()

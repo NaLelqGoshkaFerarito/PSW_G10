@@ -15,7 +15,7 @@ class DBLogger(ILogger):
     def log(self, data):
         # if data is a message from the MQTT broker save to the database
         if type(data) == Data:
-            conn = MySQLdb.connect(host="139.144.177.81", user="jesse", password="Kaas@1234", database="mydatabase")
+            conn = MySQLdb.connect(host="139.144.177.81", user="ADMIN", password="", database="mydatabase")
             cursor = conn.cursor()
             cursor.execute(
                 "INSERT IGNORE INTO device(name, longitude, latitude,  altitude) VALUES (%s, %s, %s, %s)",
