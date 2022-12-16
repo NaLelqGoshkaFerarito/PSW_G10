@@ -1,8 +1,4 @@
 import paho.mqtt.client as mqtt
-import socket
-from clients.client_plain import ClientPlain
-from loggers.console_logger import ConsoleLogger
-from loggers.csv_logger import CSVLogger
 from clients.data import Data
 import json
 from loggers.db_logger import DBLogger

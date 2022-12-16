@@ -69,6 +69,3 @@ These have the syntax `_on_function` and are called every time `function` is cal
 - `_on_connect` - connect, unless the connection is bad (in which case disconnect)
 - `_on_disconnect` - not much was added (aside from logging)
 
-6. Interface functions
-- `connection_timeout` - set how many packets to read before disconnecting (setter for `connection_timeout`)
-- `run` - run the read loop after `__connection_timeout` is set

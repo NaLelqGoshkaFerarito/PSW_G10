@@ -1,10 +1,9 @@
-import loggers.console_logger
-from loggers.csv_logger import CSVLogger
+from loggers.db_logger import DBLogger
 
 
 # this class directly interfaces with the broker
 class ClientPlain:
-    __logger = CSVLogger()
+    __logger = DBLogger()
     __global_id = 0
 
     # default constructor
@@ -38,7 +37,3 @@ class ClientPlain:
 
     def password(self):
         return self.__password
-
-    # number of clients
-    def count_of_clients(self):
-        return ClientPlain.__global_id
