@@ -1,6 +1,20 @@
 # PSW_G10
 Repo for Project Software (Group 10)
 
+# Loggers
+The loggers are responsible for logging the messages we receive. There are five different loggers, some of which use others for debugging purposes. Every single one has the method `log()`, which allows us to use them interchangeably.
+
+## Console logger
+The most widely used logger. It outputs text with a timestamp to the console. The CSV and database logger use it for debugging purposes.
+
+## File logger
+Logs text + timestamp to a `.txt` file. It was a prototype for the next logger.
+
+## CSV logger
+Logs `Data` objects to a `.csv` file, otherwise prints status messages to the console. It was used because `.csv` files made testing and prototyping easier. 
+
+## DB logger
+Logs `Data` objects to a database, otherwise prints status messages to the console. It made the implementation much more streamlined.
 # Clients explanation
 For a quick start read `Example code`
 
