@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="87a6232f-ef40-4ab2-9d4c-b908d091b313" name="Default Changelist" comment="Optimized logging&#10;- csv_logger - changed the logging for easier processing">
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/loggers/db_logger.py" beforeDir="false" afterPath="$PROJECT_DIR$/loggers/db_logger.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -46,7 +47,7 @@
       <recent name="C:\Y2\Q2\ProjSW\mqtt_beta\client" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.wsgi">
+  <component name="RunManager" selected="Python.alt_main_1">
     <configuration name="alt_main_1" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="mqtt_beta" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -175,11 +176,11 @@
     </configuration>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.alt_main_1" />
         <item itemvalue="Python.main" />
         <item itemvalue="Python.data_insert" />
         <item itemvalue="Python.wsgi (1)" />
         <item itemvalue="Python.data_extract" />
-        <item itemvalue="Python.alt_main_1" />
       </list>
     </recent_temporary>
   </component>

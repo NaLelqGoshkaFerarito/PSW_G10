@@ -19,10 +19,10 @@ class DBLogger(ILogger):
             cursor = conn.cursor()
             cursor.execute(
                 "INSERT IGNORE INTO device(name, longitude, latitude,  altitude) VALUES (%s, %s, %s, %s)",
-                (data.device_id, data.longitude, data.latitude, data.latitude))
+                (data.device_id, data.longitude, data.latitude, data.altitude))
             cursor.execute(
-                "INSERT INTO status(temperature, pressure, humidity, light, time) VALUES (%s, %s, %s, %s,%s)",
-                (data.temperature, data.pressure, 0, data.light, data.datetime))
+                "INSERT INTO status(device_id, temperature, pressure, humidity, light, time) VALUES (%s, %s, %s, %s, %s,%s)",
+                (data.device_id, data.temperature, data.pressure, 0, data.light, data.datetime))
             conn.commit()
             cursor.close()
         else:
