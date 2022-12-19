@@ -23,6 +23,7 @@ class DBLogger(ILogger):
             cursor.execute(
                 "INSERT INTO status(temperature, pressure, humidity, light, time) VALUES (%s, %s, %s, %s,%s)",
                 (data.temperature, data.pressure, 0, data.light, data.datetime))
+            conn.commit()
             cursor.close()
         else:
             DBLogger.__console_logger.log(data)

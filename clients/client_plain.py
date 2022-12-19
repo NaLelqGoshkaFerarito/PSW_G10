@@ -37,3 +37,7 @@ class ClientPlain:
 
     def password(self):
         return self.__password
+
+    @staticmethod
+    def count_of_clients():
+        return ClientPlain.__global_id

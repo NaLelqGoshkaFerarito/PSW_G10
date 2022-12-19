@@ -14,7 +14,7 @@ def get_devices(count):
     # database interaction setup
     conn = MySQLdb.connect(host="139.144.177.81", user="ADMIN", password="", database="mydatabase")
     cursor = conn.cursor()
-    cursor.execute("SELECT * from device")
+    cursor.execute("SELECT * from device ORDER BY name DESC")
     rows_device = cursor.fetchall()
 
     output = dict()
@@ -24,10 +24,56 @@ def get_devices(count):
         # if row is an actual row
         if len(row) > 3:
             if lines > 0:
-                data_row = {'device_id': f'{row[0]}', 'name': f'{row[1]}',
-                            'coordinate': f'{row[2]}', 'altitude': f'{row[3]}'}
+                data_row = {'device_id': f'{row[0]}', 'longitude': f'{row[1]}',
+                            'latitude': f'{row[2]}', 'altitude': f'{row[3]}'}
                 # dictionary looks like number: data
                 output[f'{count - lines}'] = f'data_row: {data_row.__str__()}'
+            lines -= 1
+    # return the string with ' quotes because the other ones need to be excaped with \
+    cursor.close()
+    return f'{output.__str__()}'.replace('"', "'")
+
+
+# get devices with that name
+def get_devices_equ(name):
+    conn = MySQLdb.connect(host="139.144.177.81", user="ADMIN", password="", database="mydatabase")
+    cursor = conn.cursor()
+    cursor.execute("SELECT * from device WHERE name = %s", (name, ))
+    rows_device = cursor.fetchall()
+
+    output = dict()
+
+    lines = len(rows_device)
+    for row in rows_device:
+        # if row is an actual row
+        if len(row) > 3:
+            if lines > 0:
+                data_row = {'device_id': f'{row[0]}', 'longitude': f'{row[1]}',
+                            'latitude': f'{row[2]}', 'altitude': f'{row[3]}'}
+                # dictionary looks like number: data
+                output[f'{len(rows_device) - lines}'] = f'data_row: {data_row.__str__()}'
+            lines -= 1
+    # return the string with ' quotes because the other ones need to be excaped with \
+    cursor.close()
+    return f'{output.__str__()}'.replace('"', "'")
+
+def get_all_devices():
+    conn = MySQLdb.connect(host="139.144.177.81", user="ADMIN", password="", database="mydatabase")
+    cursor = conn.cursor()
+    cursor.execute("SELECT * from device")
+    rows_device = cursor.fetchall()
+
+    output = dict()
+
+    lines = len(rows_device)
+    for row in rows_device:
+        # if row is an actual row
+        if len(row) > 3:
+            if lines > 0:
+                data_row = {'device_id': f'{row[0]}', 'longitude': f'{row[1]}',
+                            'latitude': f'{row[2]}', 'altitude': f'{row[3]}'}
+                # dictionary looks like number: data
+                output[f'{len(rows_device) - lines}'] = f'data_row: {data_row.__str__()}'
             lines -= 1
     # return the string with ' quotes because the other ones need to be excaped with \
     cursor.close()
@@ -37,7 +83,7 @@ def get_statuses(count):
     # database interaction setup
     conn = MySQLdb.connect(host="139.144.177.81", user="ADMIN", password="", database="mydatabase")
     cursor = conn.cursor()
-    cursor.execute("SELECT * from status")
+    cursor.execute("SELECT * from status ORDER BY time DESC")
     rows_status = cursor.fetchall()
 
     output = dict()
@@ -56,6 +102,7 @@ def get_statuses(count):
     # return the string with ' quotes because the other ones need to be excaped with \
     cursor.close()
     return f'{output.__str__()}'.replace('"', "'")
+
 
 def get_messages_deprecated(count):
     output = dict()
@@ -83,6 +130,9 @@ def get_messages_deprecated(count):
 def default():
     return "<p>Hi :D</p>"
 
+@app.route("/devices/all/")
+def all_devices():
+    return json.dumps(get_all_devices())
 
 # get a number of devices
 @app.route("/devices/")
@@ -90,6 +140,12 @@ def number_of_devices():
     # ask for input in the format "/devices/?number=NUM_OF_DEVICES"
     query = int(request.args.get("number"))
     return json.dumps(get_devices(query))
+
+
+@app.route("/device/")
+def name_of_device():
+    query = str(request.args.get("name"))
+    return json.dumps((get_devices_equ(query)))
 
 
 # get a number of messages
