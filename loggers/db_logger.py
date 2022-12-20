@@ -17,6 +17,23 @@ class DBLogger(ILogger):
         if type(data) == Data:
             conn = MySQLdb.connect(host="139.144.177.81", user="ADMIN", password="", database="mydatabase")
             cursor = conn.cursor()
+            cursor.execute("CREATE TABLE IF NOT EXISTS device("
+                           "name VARCHAR(255) NOT NULL,"
+                           "longitude VARCHAR(255),"
+                           "latitude VARCHAR(255),"
+                           "altitude VARCHAR(255),"
+                           "PRIMARY KEY (name))")
+
+            cursor.execute("CREATE TABLE IF NOT EXISTS status("
+                           "status_id INTEGER AUTO_INCREMENT,"
+                           "device_id VARCHAR(255) ,"
+                           "temperature INTEGER NOT NULL,"
+                           "pressure INTEGER NOT NULL,"
+                           "humidity INTEGER NOT NULL,"
+                           "light INTEGER NOT NULL,"
+                           "time DATETIME,"
+                           "PRIMARY KEY (status_id),"
+                           "FOREIGN KEY (device_id) REFERENCES device(name))")
             cursor.execute(
                 "INSERT IGNORE INTO device(name, longitude, latitude,  altitude) VALUES (%s, %s, %s, %s)",
                 (data.device_id, data.longitude, data.latitude, data.altitude))

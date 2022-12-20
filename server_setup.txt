@@ -1,2 +1,2 @@
-> ngrok authtoken 2ILllq6oF6vFXR3Ic1Qnu9kjxxu_5h2wxA5cC64Go5jJSsnJX
-> ngrok http 7777
+ngrok authtoken 2ILllq6oF6vFXR3Ic1Qnu9kjxxu_5h2wxA5cC64Go5jJSsnJX
+ngrok http 7777
