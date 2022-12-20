@@ -5,8 +5,11 @@ import random
 import matplotlib.pyplot as plt
 from tkcalendar import Calendar
 from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg, NavigationToolbar2Tk)
-import webbrowser
 from datetime import date, timedelta, datetime
+import tkintermapview
+import babel.numbers
+from tkinter import ttk
+import mysql.connector
 
 
 
@@ -14,6 +17,24 @@ sensors = ['sensor1', 'sensor2', 'sensor3']                      #sensor ids
 metrics = ['Temperature', 'Humidity', 'Pressure', 'Light']       
 colors = ['red', 'orange', 'green', 'cyan', 'blue', 'purple']    
 
+
+numbet_of_points = 48
+
+def datelist(n):
+    dates = []
+    count = 0
+    today = date.today()
+    for i in range(n):
+        dates.append(datetime(today.year, today.month, today.day, i % 24))
+        count += 1
+        if count == 24:
+            today = today + timedelta(1)
+            count = 0
+    return dates
+    
+
+
+            
 
 def randomlist(n, metric):
     rand_list=[]                                                   
@@ -31,15 +52,34 @@ def randomlist(n, metric):
         return rand_list
 
 
+locations = {'Saxion':(52.221361, 6.886444), 'Gronau':(53.221361, 6.886444), 'Wierden' : (52.221361, 7.886444)}
+
+
+
+    
+
+def mapview(x):
+    top = tk.Toplevel()
+    location = list(locations)[x]
+    top.title(f'Map view app - {location}')
+    coords = locations[location]
+    top.geometry('800x600')
+    my_label = tk.LabelFrame(top)
+    my_label.pack(pady=20)
+    map_widget = tkintermapview.TkinterMapView(top, width=800,height=600,corner_radius=0)
+    map_widget.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
+    marker = map_widget.set_marker(coords[0], coords[1], text=f"{location} Sensor")
+    map_widget.set_position(coords[0], coords[1], marker=True)
+
 
 class SensorData:   #class that contains all values for given sensors in given period
     def __init__(self, period, sensorid):
         self.start = period[0]
         self.end = period[-1]
         self.sensor_id = sensorid
-        self.dataframe = pd.DataFrame({'Time':range(1, 25)})
+        self.dataframe = pd.DataFrame({'Time':datelist(numbet_of_points)})
         for metric in metrics:
-            self.dataframe[metric] = randomlist(24, metric=metric)
+            self.dataframe[metric] = randomlist(numbet_of_points, metric=metric)
     
 def update_label(self):
     self.label.configure(text = (self.period[0] + " - " + self.period[-1]))
@@ -49,23 +89,21 @@ def onselect(window, evt = None):  #triggers when listbox choice is altered
     window.changeplot()
     window.changetext()
     
-def grad_date(window, evt = None):
-    if(window.button['text'] == "Start date"):
+def grad_date(window, button, evt = None):
+    if(button == 0):
         dt1 = datetime.strptime(window.period[-1], "%d/%m/%Y")
         dt2 = datetime.strptime(window.calendar.get_date(), "%d/%m/%Y")
         if(dt2 >= dt1):
             return
-    elif(window.button['text'] == "End date"):
+    elif(button == 1):
         dt1 = datetime.strptime(window.period[0], "%d/%m/%Y")
         dt2 = datetime.strptime(window.calendar.get_date(), "%d/%m/%Y")
         if(dt2 <= dt1):
             return
-    if(window.button['text'] == "Start date"):
+    if(button == 0):
         window.period[0] = window.calendar.get_date()
-        window.button.configure(text = 'End date')
-    elif(window.button['text'] == "End date"):
+    elif(button == 1):
         window.period[-1] = window.calendar.get_date()
-        window.button.configure(text = 'Start date')
     update_label(window)
 
 
@@ -74,8 +112,8 @@ def clear_frame(frame): #deletes everything in frame
         widgets.destroy()
 
 
-def callback(event, text):
-    print(text)
+def callback(event, x):
+    mapview(x)
 
 class MyWindow:  #main window
     def __init__(self, master=None ,*args, **kwargs):
@@ -87,6 +125,8 @@ class MyWindow:  #main window
         for sensor in sensors:
             self.sensors_last.append(SensorData(self.period, sensor))
 
+        #tab manager
+        tabControl = ttk.Notebook(master)
 
         #frames
         self.frame0 = tk.Frame(master=master)
@@ -116,17 +156,20 @@ class MyWindow:  #main window
                year = date.today().year, month = date.today().month, date_pattern = 'dd/mm/yyyy',
                day = date.today().day)
  
-        self.calendar.grid(row = 0, column = 0)
+        self.calendar.grid(row = 0, column = 0, columnspan =2)
 
 
         #button to specify period
-        self.button = tk.Button(self.frame5, text = "Start date", command = lambda: grad_date(self))
-        self.button.grid(row = 1, column = 0)
+        self.start_button = tk.Button(self.frame5, text = "Start date", command = lambda: grad_date(self, 0))
+        self.start_button.grid(row = 1, column = 0)
+
+        self.end_button = tk.Button(self.frame5, text = "End date", command = lambda:grad_date(self, 1))
+        self.end_button.grid(row=1, column=1)
 
         #label that shows current period
 
         self.label = tk.Label(self.frame5, text = "")
-        self.label.grid(row = 2, column = 0)
+        self.label.grid(row = 2, column = 0, columnspan=2)
         update_label(self)
 
   
@@ -149,16 +192,20 @@ class MyWindow:  #main window
         self.figure = plt.Figure(figsize=(5, 4), dpi=100)
         self.ax = self.figure.add_subplot(111)###
         self.line = FigureCanvasTkAgg(self.figure, self.frame1)
+        self.figure.set_tight_layout(True)  
         self.toolbar = NavigationToolbar2Tk(self.line, self.frame1, pack_toolbar=False)
         self.toolbar.update()
         self.toolbar.grid(row = 1, column = 0)
         
-        self.line.get_tk_widget().grid(row=0, column=0)
+        self.line.get_tk_widget().grid(row=0, column=0, sticky = 'swen')
 
         #radio button
         self.r_button_val = tk.IntVar()
         for i in range(len(metrics)):
             tk.Radiobutton(self.frame1, text = f'{metrics[i]}', variable = self.r_button_val, value = i, command=lambda: onselect(self)).grid(row=i + 1 + 1, column=0)
+
+        #tab
+
 
         #status bar
         self.status = tk.Label(master, text="Status bar that shows important information", bd = 1, relief='sunken', anchor = 'e')
@@ -171,21 +218,24 @@ class MyWindow:  #main window
 
     def changeplot(self): #updates plot
         sensors_ = []
+        sensor_names = []
         self.ax.clear()
         clear_frame(self.frame2)
         for item in self.lb.curselection():
             sensors_.append(item)
+            sensor_names.append(sensors[item])
         plt.clf()
         count = 0
         for sensor in sensors_:
             dff = self.sensors_last[sensor]
-            dff = dff.dataframe[['Time', metrics[self.r_button_val.get()]]].groupby('Time').sum()
+            dff = dff.dataframe[['Time', metrics[self.r_button_val.get()]]].groupby('Time').sum()#[dff.dataframe['Time'] > self.period[0] & dff.dataframe['Time'] < self.period[1]].groupby('Time').sum()          #['Time', metrics[self.r_button_val.get()]]].groupby('Time').sum()
             dff.plot(kind='line', legend=False, ax=self.ax, color=colors[sensor], marker='o', fontsize=10)
+            self.ax.legend(sensor_names, loc=0, frameon=True)
             legend = tk.Label(self.frame2, text = self.sensors_last[sensor].sensor_id, fg = colors[sensor], font=20)
             legend.grid(row = count, column = 0)
             def make_lambda(x):
                 return lambda ev:callback(ev, x)
-            legend.bind("<Button-1>", make_lambda(self.sensors_last[sensor].sensor_id))
+            legend.bind("<Button-1>", make_lambda(sensor))
             count += 1
         self.ax.set_title(f'Time Vs. {metrics[self.r_button_val.get()]}')
         self.ax.grid(b = True)
@@ -218,11 +268,16 @@ class MyWindow:  #main window
 
     
     
-    
+def main():
+    # conn = mysql.connector.connect(host="139.144.177.81", user="jesse", password="Kaas@1234", database="mydatabase")
+    # if conn.is_connected():
+    #     print(1)
+    root = tk.Tk()
+    #second = tk.Tk()
+    app = MyWindow(master = root)
+    #app2 = MyWindow(master = second)
+    root.mainloop()
 
-
-root = tk.Tk()
-app = MyWindow(master = root)
-
-root.mainloop()
+if __name__ == '__main__':
+    main()
 
