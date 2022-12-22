@@ -63,6 +63,7 @@ class ClientMQTT:
         rx_metadata = uplink_message["rx_metadata"]
         location = rx_metadata[0]["location"]
         # get the list of gateway IDs (length 1) and extract the ID from there
+        device_id = msg_json["end_device_ids"]["device_id"]
         gateway_id = rx_metadata[0]["gateway_ids"]["gateway_id"]
         location_latitude = location["latitude"]
         location_longitude = location["longitude"]
@@ -71,7 +72,7 @@ class ClientMQTT:
 
         data = Data()
         # store the data in a predefined data object
-        data.device_id = gateway_id.__str__()
+        data.device_id = device_id.__str__()
         data.pressure = decoded_payload["pressure"].__str__()
         data.light = decoded_payload["light"].__str__()
         data.temperature = decoded_payload["temperature"].__str__()

@@ -22,6 +22,7 @@ class DBLogger(ILogger):
                            "longitude VARCHAR(255),"
                            "latitude VARCHAR(255),"
                            "altitude VARCHAR(255),"
+                           "packets INT,"
                            "PRIMARY KEY (name))")
 
             cursor.execute("CREATE TABLE IF NOT EXISTS status("
@@ -40,6 +41,7 @@ class DBLogger(ILogger):
             cursor.execute(
                 "INSERT INTO status(device_id, temperature, pressure, light, time, consumed_airtime) VALUES (%s, %s, %s, %s, %s,%s)",
                 (data.device_id, data.temperature, data.pressure, data.light, data.datetime, data.consumed_airtime.replace("s", "")))
+
             conn.commit()
             cursor.close()
         else:

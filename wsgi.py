@@ -141,6 +141,45 @@ def get_statuses(count):
     return output
 
 
+def get_statuses_for_device_for_time_period(name, time_period="day"):
+    conn = MySQLdb.connect(host="139.144.177.81", user="ADMIN", password="", database="mydatabase")
+    cursor = conn.cursor()
+    cursor.execute("SELECT * from device")
+    rows_status = str()
+
+    if time_period == "day":
+        cursor.execute("select * from status WHERE DATE_SUB(current_date(), interval 1 day)")
+        rows_status = cursor.fetchall()
+    elif time_period == "week":
+        cursor.execute("select * from status WHERE DATE_SUB(current_date(), interval 1 week)")
+        rows_status = cursor.fetchall()
+    elif time_period == "month":
+        cursor.execute("select * from status WHERE DATE_SUB(current_date(), interval 1 month)")
+        rows_status = cursor.fetchall()
+    # else get the statuses for the last hour
+    # else:
+    #     cursor.execute("select * from status where time >= DATE_SUB(localtimestamp(), interval 1 hour)")
+
+        rows_status = cursor.fetchall()
+        output = list()
+
+        for row in rows_status:
+            # if row is an actual row
+            if len(row) > 3:
+                data_row = dict()
+                data_row["status_id"] = row[0]
+                data_row["device_id"] = row[1]
+                data_row["temperature"] = row[2]
+                data_row["pressure"] = row[3]
+                data_row["light"] = row[4]
+                data_row["time"] = datetime.strftime(row[5], "%Y-%m-%d %H:%M:%S")
+                data_row["consumed_aittime"] = row[6]
+                output.append(data_row)
+
+        cursor.close()
+        return output
+
+
 def get_messages_deprecated(count):
     output = dict()
     # open this month's file
@@ -205,6 +244,18 @@ def number_of_statuses_for_device():
     except:
         number = 1
     return json.dumps(get_statuses_for_device_equ(name, number))
+
+
+# get statuses based on the time the packet was received
+@app.route("/statuses/device_time/")
+def statuses_datetime():
+    # ask for input in the format "/statuses/device_time/?name=DEVICE_NAME&time_period=TIME_PERIOD_STR"
+    name = str(request.args.get("name"))
+    try:
+        time_period = str(request.args.get("number"))
+    except:
+        time_period = "day"
+    return json.dumps(get_statuses_for_device_for_time_period(name, time_period))
 
 
 if __name__ == "__main__":
