@@ -27,19 +27,19 @@ class DBLogger(ILogger):
             cursor.execute("CREATE TABLE IF NOT EXISTS status("
                            "status_id INTEGER AUTO_INCREMENT,"
                            "device_id VARCHAR(255) ,"
-                           "temperature INTEGER NOT NULL,"
-                           "pressure INTEGER NOT NULL,"
-                           "humidity INTEGER NOT NULL,"
-                           "light INTEGER NOT NULL,"
+                           "temperature FLOAT NOT NULL,"
+                           "pressure FLOAT NOT NULL,"
+                           "light FLOAT NOT NULL,"
                            "time DATETIME,"
+                           "consumed_airtime FLOAT,"
                            "PRIMARY KEY (status_id),"
                            "FOREIGN KEY (device_id) REFERENCES device(name))")
             cursor.execute(
                 "INSERT IGNORE INTO device(name, longitude, latitude,  altitude) VALUES (%s, %s, %s, %s)",
                 (data.device_id, data.longitude, data.latitude, data.altitude))
             cursor.execute(
-                "INSERT INTO status(device_id, temperature, pressure, humidity, light, time) VALUES (%s, %s, %s, %s, %s,%s)",
-                (data.device_id, data.temperature, data.pressure, 0, data.light, data.datetime))
+                "INSERT INTO status(device_id, temperature, pressure, light, time, consumed_airtime) VALUES (%s, %s, %s, %s, %s,%s)",
+                (data.device_id, data.temperature, data.pressure, data.light, data.datetime, data.consumed_airtime.replace("s", "")))
             conn.commit()
             cursor.close()
         else:

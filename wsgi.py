@@ -51,7 +51,7 @@ def get_devices_equ(name):
                 data_row = {'device_id': f'{row[0]}', 'longitude': f'{row[1]}',
                             'latitude': f'{row[2]}', 'altitude': f'{row[3]}'}
                 # dictionary looks like number: data
-                output[f'{len(rows_device) - lines}'] = f'data_row: {data_row.__str__()}'
+                output[f'{len(rows_device) - lines}'] = f'{data_row.__str__()}'
             lines -= 1
     # return the string with ' quotes because the other ones need to be excaped with \
     cursor.close()
@@ -73,7 +73,7 @@ def get_all_devices():
                 data_row = {'device_id': f'{row[0]}', 'longitude': f'{row[1]}',
                             'latitude': f'{row[2]}', 'altitude': f'{row[3]}'}
                 # dictionary looks like number: data
-                output[f'{len(rows_device) - lines}'] = f'data_row: {data_row.__str__()}'
+                output[f'{len(rows_device) - lines}'] = f'{data_row.__str__()}'
             lines -= 1
     # return the string with ' quotes because the other ones need to be excaped with \
     cursor.close()
@@ -97,7 +97,7 @@ def get_statuses(count):
                             'pressure': f'{row[3]}', 'humidity': f'{row[4]}', 'light': f'{row[5]}',
                             'time': f'{row[6]}'}
                 # dictionary looks like number: data
-                output[f'{count - lines}'] = f'data_row: {data_row.__str__()}'
+                output[f'{count - lines}'] = f'{data_row.__str__()}'
             lines -= 1
     # return the string with ' quotes because the other ones need to be excaped with \
     cursor.close()
