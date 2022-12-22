@@ -3,12 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="87a6232f-ef40-4ab2-9d4c-b908d091b313" name="Default Changelist" comment="Optimized logging&#10;- csv_logger - changed the logging for easier processing">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/clients/explanation.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/loggers/db_logger.py" beforeDir="false" afterPath="$PROJECT_DIR$/loggers/db_logger.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/website/base_bp.py" beforeDir="false" afterPath="$PROJECT_DIR$/website/base_bp.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/website/static/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/website/static/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/website/templates/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/website/templates/index.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/website/wsgi.py" beforeDir="false" afterPath="$PROJECT_DIR$/website/wsgi.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/wsgi.py" beforeDir="false" afterPath="$PROJECT_DIR$/wsgi.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />

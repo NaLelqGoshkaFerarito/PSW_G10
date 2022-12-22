@@ -7,13 +7,11 @@ views = Blueprint(__name__, "views")
 
 @views.route("/")
 def home():
-    jsonb = requests.get("http://127.0.0.1:7777/statuses/?number=10").json().replace("'", '"')
+    jsonb = json.dumps(requests.get("http://127.0.0.1:7777/devices/all/").json())
     lst_x = list()
     lst_y = list()
-    # for packet in jsonb:
-    #     lst_x.append(packet["time"])
-    #     lst_y.append(packet["light"])
-    return render_template("index.html", sth=jsonb)
+    for packet in jsonb:
+        return render_template("index.html", sth=jsonb)
 
 
 # @views.route("/<var>")
