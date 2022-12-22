@@ -36,11 +36,36 @@ def get_devices(count):
     return output.__str__()
 
 
+# gets statuses for a device with that
+def get_statuses_for_device_equ(name, number=1):
+    conn = MySQLdb.connect(host="139.144.177.81", user="ADMIN", password="", database="mydatabase")
+    cursor = conn.cursor()
+    cursor.execute("SELECT * from status WHERE device_id = %s ORDER BY time DESC LIMIT %s", (name, number,))
+    rows_status = cursor.fetchall()
+    output = list()
+
+    for row in rows_status:
+        # if row is an actual row
+        if len(row) > 3:
+            data_row = dict()
+            data_row["status_id"] = row[0]
+            data_row["device_id"] = row[1]
+            data_row["temperature"] = row[2]
+            data_row["pressure"] = row[3]
+            data_row["light"] = row[4]
+            data_row["time"] = datetime.strftime(row[5], "%Y-%m-%d %H:%M:%S")
+            data_row["consumed_aittime"] = row[6]
+            output.append(data_row)
+
+    cursor.close()
+    return output
+
+
 # get devices with that name
 def get_devices_equ(name):
     conn = MySQLdb.connect(host="139.144.177.81", user="ADMIN", password="", database="mydatabase")
     cursor = conn.cursor()
-    cursor.execute("SELECT * from device WHERE name = %s", (name,))
+    cursor.execute("SELECT * from status WHERE device_id ORDER BY time DESC")
     rows_device = cursor.fetchall()
 
     output = list()
@@ -158,6 +183,7 @@ def number_of_devices():
 
 @app.route("/device/")
 def name_of_device():
+    # ask for input in the format "/device/?name=DEVICE_NAME"
     query = str(request.args.get("name"))
     return json.dumps((get_devices_equ(query)))
 
@@ -168,6 +194,17 @@ def number_of_statuses():
     # ask for input in the format "/statuses/?number=NUM_OF_STATUSES"
     query = int(request.args.get("number"))
     return json.dumps(get_statuses(query))
+
+
+@app.route("/statuses/device/")
+def number_of_statuses_for_device():
+    # ask for input in the format "/statuses/device/?name=DEVICE_NAME&number=NUMBER_OF_STATUSES"
+    name = str(request.args.get("name"))
+    try:
+        number = int(request.args.get("number"))
+    except:
+        number = 1
+    return json.dumps(get_statuses_for_device_equ(name, number))
 
 
 if __name__ == "__main__":

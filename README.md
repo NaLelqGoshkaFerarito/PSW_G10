@@ -132,3 +132,6 @@ Can be accessed at `base-url/device/all/`.
 Gets a JSON containing `NUM_OF_STATS` logs from the database in the form of a dictionary.
 Can be accessed at `base-url/statuses/?number=NUM_OF_STATS`.
 
+### Get a number of statuses for a device
+Gets a JSON containing `NUM_OF_STATS` logs from the database for device `DEVICE_NAME` in the form of a dictionary.
+Can be accessed at `base-url/statuses/device/?name=DEVICE_NAME&number=NUM_OF_STATS`. In case `NUM_OF_STATS` is omitted, one status will be returned

@@ -9,4 +9,5 @@ class Data:
         self.latitude = ""
         self.longitude = ""
         self.altitude = ""
+        self.metadata = list()
 
