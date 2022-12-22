@@ -29,6 +29,12 @@ The member variables are as follows:
 - `consumed_airtime` - travel time of the packet 
 - `latitude`, `longitude`, `altitude` - location of the sensor
 
+### SI-Units
+- `pressure` - Pascal [Pa]
+- `temperature` - Centrigade [°C]
+- `light` - Lux (Techincally not an SI-unit) 
+- `consumed_airtime` - seconds [s]
+
 ## ClientPlain
 This client is mainly for data storage and tracking of IDs
 
