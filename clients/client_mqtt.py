@@ -1,5 +1,5 @@
 import paho.mqtt.client as mqtt
-from clients.data import Data
+from clients.data import PYData
 import json
 from loggers.db_logger import DBLogger
 
@@ -38,7 +38,6 @@ class ClientMQTT:
         self.__connection_timeout = 1
 
     def _on_message(client, userdata, message):
-
         ClientMQTT.__logger.log("Received message")
         msg_decoded = ClientMQTT.decode(message.payload)
         ClientMQTT.__logger.log("Decoded message, logging")
@@ -54,6 +53,8 @@ class ClientMQTT:
         # turn that string into a json (basically a dictionary)
         msg_json = json.loads(msg_str)
 
+        device_id = msg_json["end_device_ids"]["device_id"]
+
         # dictionary within a dictionary
         uplink_message = msg_json["uplink_message"]
         time = msg_json["received_at"]
@@ -62,15 +63,14 @@ class ClientMQTT:
         # rx_metadata is a list (of length 1)
         rx_metadata = uplink_message["rx_metadata"]
         location = rx_metadata[0]["location"]
-        # get the list of gateway IDs (length 1) and extract the ID from there
-        device_id = msg_json["end_device_ids"]["device_id"]
+
         gateway_id = rx_metadata[0]["gateway_ids"]["gateway_id"]
         location_latitude = location["latitude"]
         location_longitude = location["longitude"]
         location_altitude = location["altitude"]
         airtime = uplink_message["consumed_airtime"]
 
-        data = Data()
+        data = PYData()
         # store the data in a predefined data object
         data.device_id = device_id.__str__()
         data.pressure = decoded_payload["pressure"].__str__()
@@ -99,4 +99,3 @@ class ClientMQTT:
     __client.on_connect = _on_connect
     __client.on_disconnect = _on_disconnect
     __client.on_message = _on_message
-

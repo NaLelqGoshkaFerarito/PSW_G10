@@ -1,0 +1,82 @@
+{
+  "end_device_ids": {
+    "device_id": "lht-gronau",
+    "application_ids": {
+      "application_id": "project-software-engineering"
+    },
+    "dev_eui": "A84041C1818350AD",
+    "join_eui": "A000000000000100",
+    "dev_addr": "260B6BA6"
+  },
+  "correlation_ids": [
+    "as:up:01GMYZKBWV116VEKFZCXF7HEA4",
+    "gs:conn:01GMYTEYH9H802XDTBPWHPA8MC",
+    "gs:up:host:01GMYTEYHHVX5JBAP2W2Y0DMBD",
+    "gs:uplink:01GMYZKBPCJSH13538NNBGMRZ2",
+    "ns:uplink:01GMYZKBPDC938BQZZXVBDDSFJ",
+    "rpc:/ttn.lorawan.v3.GsNs/HandleUplink:01GMYZKBPDE00Q6E1EWTZYMJJP",
+    "rpc:/ttn.lorawan.v3.NsAs/HandleUplink:01GMYZKBWTPZA7CPT9KP56AN4D"
+  ],
+  "received_at": "2022-12-23T07:54:11.739010624Z",
+  "uplink_message": {
+    "session_key_id": "AXxKWF072JJcR3DkkkXENg==",
+    "f_port": 2,
+    "f_cnt": 32040,
+    "frm_payload": "y7kDTAPeBQAef/8=",
+    "decoded_payload": {
+      "BatV": 3.001,
+      "Bat_status": 3,
+      "Hum_SHT": 99,
+      "ILL_lx": 30,
+      "TempC_SHT": 8.44,
+      "Work_mode": "Illumination Sensor"
+    },
+    "rx_metadata": [
+      {
+        "gateway_ids": {
+          "gateway_id": "lora-gronau-centrum",
+          "eui": "58A0CBFFFE801F2C"
+        },
+        "time": "2022-12-23T07:54:11.450265884Z",
+        "timestamp": 1090939995,
+        "rssi": -97,
+        "channel_rssi": -97,
+        "snr": 6.5,
+        "location": {
+          "latitude": 52.21264520215403,
+          "longitude": 7.039657115346928,
+          "source": "SOURCE_REGISTRY"
+        },
+        "uplink_token": "CiEKHwoTbG9yYS1ncm9uYXUtY2VudHJ1bRIIWKDL//6AHywQ29iZiAQaDAijvZWdBhDuz+X9ASD4ht2I4JwB",
+        "received_at": "2022-12-23T07:54:11.462956588Z"
+      }
+    ],
+    "settings": {
+      "data_rate": {
+        "lora": {
+          "bandwidth": 125000,
+          "spreading_factor": 7,
+          "coding_rate": "4/5"
+        }
+      },
+      "frequency": "867300000",
+      "timestamp": 1090939995,
+      "time": "2022-12-23T07:54:11.450265884Z"
+    },
+    "received_at": "2022-12-23T07:54:11.533235202Z",
+    "consumed_airtime": "0.061696s",
+    "version_ids": {
+      "brand_id": "dragino",
+      "model_id": "lht65",
+      "hardware_version": "_unknown_hw_version_",
+      "firmware_version": "1.8",
+      "band_id": "EU_863_870"
+    },
+    "network_ids": {
+      "net_id": "000013",
+      "tenant_id": "ttn",
+      "cluster_id": "eu1",
+      "cluster_address": "eu1.cloud.thethings.network"
+    }
+  }
+}

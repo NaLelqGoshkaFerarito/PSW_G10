@@ -1,0 +1,83 @@
+{
+  "end_device_ids": {
+    "device_id": "lht-wierden",
+    "application_ids": {
+      "application_id": "project-software-engineering"
+    },
+    "dev_eui": "A840414E618350B1",
+    "join_eui": "A000000000000100",
+    "dev_addr": "260BCC18"
+  },
+  "correlation_ids": [
+    "as:up:01GMYZG3KNCHHPHRE8RJK754MH",
+    "gs:conn:01GMXK5162GA81WV2VHX3FKE7G",
+    "gs:up:host:01GMXK5167X70PABCJQQ9N1QZ7",
+    "gs:uplink:01GMYZG3D7VY3V23YBSWHEC65T",
+    "ns:uplink:01GMYZG3D81T0N4NZRPAJSRMR8",
+    "rpc:/ttn.lorawan.v3.GsNs/HandleUplink:01GMYZG3D8874J88YMPYVJ08XG",
+    "rpc:/ttn.lorawan.v3.NsAs/HandleUplink:01GMYZG3KNS0AM22MHPHFC633F"
+  ],
+  "received_at": "2022-12-23T07:52:24.949275216Z",
+  "uplink_message": {
+    "session_key_id": "AXxMYtR3CkBWclq0v9WHwQ==",
+    "f_port": 2,
+    "f_cnt": 32011,
+    "frm_payload": "y8QDUQPXBQAVf/8=",
+    "decoded_payload": {
+      "BatV": 3.012,
+      "Bat_status": 3,
+      "Hum_SHT": 98.3,
+      "ILL_lx": 21,
+      "TempC_SHT": 8.49,
+      "Work_mode": "Illumination Sensor"
+    },
+    "rx_metadata": [
+      {
+        "gateway_ids": {
+          "gateway_id": "slot-wierden",
+          "eui": "58A0CBFFFE8005DA"
+        },
+        "time": "2022-12-23T07:52:24.696388006Z",
+        "timestamp": 3549000699,
+        "rssi": -73,
+        "channel_rssi": -73,
+        "snr": 9.5,
+        "location": {
+          "latitude": 52.36891310514845,
+          "longitude": 6.602898538112641,
+          "altitude": 10,
+          "source": "SOURCE_REGISTRY"
+        },
+        "uplink_token": "ChoKGAoMc2xvdC13aWVyZGVuEghYoMv//oAF2hD756WcDRoMCLi8lZ0GEL/PtOICIPiYtIelyQo=",
+        "received_at": "2022-12-23T07:52:24.723908345Z"
+      }
+    ],
+    "settings": {
+      "data_rate": {
+        "lora": {
+          "bandwidth": 125000,
+          "spreading_factor": 7,
+          "coding_rate": "4/5"
+        }
+      },
+      "frequency": "868300000",
+      "timestamp": 3549000699,
+      "time": "2022-12-23T07:52:24.696388006Z"
+    },
+    "received_at": "2022-12-23T07:52:24.744292785Z",
+    "consumed_airtime": "0.061696s",
+    "version_ids": {
+      "brand_id": "dragino",
+      "model_id": "lht65",
+      "hardware_version": "_unknown_hw_version_",
+      "firmware_version": "1.8",
+      "band_id": "EU_863_870"
+    },
+    "network_ids": {
+      "net_id": "000013",
+      "tenant_id": "ttn",
+      "cluster_id": "eu1",
+      "cluster_address": "eu1.cloud.thethings.network"
+    }
+  }
+}
