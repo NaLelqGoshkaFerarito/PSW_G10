@@ -1,7 +1,7 @@
 import csv
 from .i_logger import ILogger
 from datetime import datetime
-from clients.data import Data
+from clients.data import PYData
 from .console_logger import ConsoleLogger
 
 
@@ -15,7 +15,7 @@ class CSVLogger(ILogger):
 
     def log(self, data):
         # if data is a message from the MQTT broker save in a csv file
-        if type(data) == Data:
+        if type(data) == PYData:
             with open("./loggers/logs_csv/" + self.__file_name, "a") as file:
                 writer = csv.writer(file)
                 # writes the data for device table then for the data table

@@ -11,23 +11,47 @@ The most widely used logger. It outputs text with a timestamp to the console. Th
 Logs text + timestamp to a `.txt` file. It was a prototype for the next logger.
 
 ## CSV logger
-Logs `Data` objects to a `.csv` file, otherwise prints status messages to the console. It was used because `.csv` files made testing and prototyping easier. 
+Logs `PYData` objects to a `.csv` file, otherwise prints status messages to the console. It was used because `.csv` files made testing and prototyping easier. 
 
 ## DB logger
-Logs `Data` objects to a database, otherwise prints status messages to the console. It made the implementation much more streamlined.
+Logs `PYData`, `LHTDataTemp` and `LHTDataLight` objects to a database, otherwise prints status messages to the console. It made the implementation much more streamlined.
 # Clients explanation
 For a quick start read `Example code`
 
 The two clients separate the functionality, which technically can be implemented with only one. A clearer description is present below. There is also a class which enforces a standard for data across the whole application
 *Note: logging will not be mentioned for most functions, but if you run the code it will be there*
 ## Data
-This class has no methods, only variables. This makes sure everyone on the team uses the same input and output.
+The data classes have no methods, only variables. This makes sure everyone on the team uses the same input and output.
+
+### PYData
 The member variables are as follows: 
 - `device_id` - the name of the device
 - `pressure`, `temperature`, `light` - the extracted payload (reference `MQTTClient` -> `Functions`) information 
 - `datetime` - the time retrieved from the client 
 - `consumed_airtime` - travel time of the packet 
 - `latitude`, `longitude`, `altitude` - location of the sensor
+- `metadata` - a dictionary containing rssi and gateway information 
+
+### LHTDataTemp
+The member variables are as follows: 
+- `device_id` - the name of the device
+- `b_voltage`, `b_status` - battery info; part of the extracted payload (reference `MQTTClient` -> `Functions`) information 
+- `humidity`, `temperature_inside`, `temperature_outside` - part of the extracted payload (reference `MQTTClient` -> `Functions`) information 
+- `datetime` - the time retrieved from the client 
+- `consumed_airtime` - travel time of the packet 
+- `latitude`, `longitude` - location of the sensor
+- `metadata` - a dictionary containing rssi and gateway information
+
+### LHTDataLight
+The member variables are as follows: 
+- `device_id` - the name of the device
+- `b_voltage`, `b_status` - battery info; part of the extracted payload (reference `MQTTClient` -> `Functions`) information 
+- `humidity`, `light`, `temperature` - part of the extracted payload (reference `MQTTClient` -> `Functions`) information 
+- `datetime` - the time retrieved from the client 
+- `consumed_airtime` - travel time of the packet 
+- `latitude`, `longitude` - location of the sensor
+- `metadata` - a dictionary containing rssi and gateway information
+
 
 ### SI-Units
 - `pressure` - Pascal [Pa]
@@ -135,3 +159,29 @@ Can be accessed at `base-url/statuses/?number=NUM_OF_STATS`.
 ### Get a number of statuses for a device
 Gets a JSON containing `NUM_OF_STATS` logs from the database for device `DEVICE_NAME` in the form of a dictionary.
 Can be accessed at `base-url/statuses/device/?name=DEVICE_NAME&number=NUM_OF_STATS`. In case `NUM_OF_STATS` is omitted, one status will be returned
+
+## Database
+The database is hosted on a server, and the tables are created by the `db_logger`. 
+These tables are called `device` and `status`.
+
+### device
+Device has 7 columns
+- `name` - a.k.a. `device_id`
+- `type` - value is `py`, `lht_temp` or `lht_light` depending on the device type
+- `longitude`, `latitude` and `altitude` - positional info (`altidude` is `null` for lht sensors)
+- `packets` - total number of packets for this device
+- `avg_rssi` - average rssi for this device
+
+### status
+Device has 13 columns
+- `status_id` - auto incremented primary key 
+- `device_id` - foreign key (=`device.name`)
+- `b_status` - battery status
+- `b_voltage` - battery voltage
+- `temp_in` - inside temperature
+- `temp_out` - outside temperature
+- `pressure`, `light` and `humidity`
+- `time` - date and time taken from the packet
+- `consumed_airtime` - travel time
+- `curr_rssi` - rssi extracted from the packet
+- `gateway` - gateway for the packet

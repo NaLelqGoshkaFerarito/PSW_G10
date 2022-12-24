@@ -1,7 +1,10 @@
 import paho.mqtt.client as mqtt
 from clients.data import PYData
+from clients.data import LHTDataTemp
+from clients.data import LHTDataLight
 import json
 from loggers.db_logger import DBLogger
+import re
 
 
 # provides an implementation of the MQTT client
@@ -65,26 +68,74 @@ class ClientMQTT:
         location = rx_metadata[0]["location"]
 
         gateway_id = rx_metadata[0]["gateway_ids"]["gateway_id"]
+        rssi = rx_metadata[0]["rssi"]
         location_latitude = location["latitude"]
         location_longitude = location["longitude"]
-        location_altitude = location["altitude"]
         airtime = uplink_message["consumed_airtime"]
-
-        data = PYData()
-        # store the data in a predefined data object
-        data.device_id = device_id.__str__()
-        data.pressure = decoded_payload["pressure"].__str__()
-        data.light = decoded_payload["light"].__str__()
-        data.temperature = decoded_payload["temperature"].__str__()
         # time in format 2022-12-16T09:53:30.131080123Z, needs parsing
         temp_time = time.__str__()
         temp_time2 = temp_time.replace("T", " ")
-        data.datetime = temp_time2.split(".")[0]
-        data.longitude = location_longitude.__str__()
-        data.latitude = location_latitude.__str__()
-        data.altitude = location_altitude.__str__()
-        data.consumed_airtime = airtime.__str__()
-        return data
+        datetime = temp_time2.split(".")[0]
+
+        # if the sensor name starts with "py-"
+        if re.findall("\Apy-", device_id):
+            ClientMQTT.__logger.log(f"Currently logging a py sensor")
+            location_altitude = location["altitude"]
+            data = PYData()
+            # store the data in a predefined data object
+            data.device_id = device_id.__str__()
+            data.datetime = datetime
+            data.pressure = decoded_payload["pressure"].__str__()
+            data.light = decoded_payload["light"].__str__()
+            data.temperature = decoded_payload["temperature"].__str__()
+            data.longitude = location_longitude.__str__()
+            data.latitude = location_latitude.__str__()
+            data.altitude = location_altitude.__str__()
+            data.consumed_airtime = airtime.__str__()
+            data.metadata["gateway_id"] = gateway_id.__str__()
+            data.metadata["rssi"] = rssi.__str__()
+            return data
+
+        # else the sensor is lht
+        else:
+            # try reading data as temperature
+            try:
+                ClientMQTT.__logger.log(f"Currently logging an lht sensor (type {decoded_payload['Ext_sensor']}")
+                data = LHTDataTemp()
+                data.device_id = device_id.__str__()
+
+                data.b_voltage = decoded_payload["BatV"].__str__()
+                data.b_status = decoded_payload["Bat_status"].__str__()
+                data.humidity = decoded_payload["Hum_SHT"].__str__()
+                data.temperature_inside = decoded_payload["TempC_SHT"].__str__()
+                data.temperature_outside = decoded_payload["TempC_DS"].__str__()
+
+                data.datetime = datetime
+                data.longitude = location_longitude.__str__()
+                data.latitude = location_latitude.__str__()
+                data.consumed_airtime = airtime.__str__()
+                data.metadata["gateway_id"] = gateway_id.__str__()
+                data.metadata["rssi"] = rssi.__str__()
+                return data
+            # if that breaks, read data as light
+            except:
+                ClientMQTT.__logger.log(f"Currently logging an lht sensor (type {decoded_payload['Work_mode']}")
+                data = LHTDataLight()
+                data.device_id = device_id.__str__()
+
+                data.b_voltage = decoded_payload["BatV"].__str__()
+                data.b_status = decoded_payload["Bat_status"].__str__()
+                data.humidity = decoded_payload["Hum_SHT"].__str__()
+                data.light = decoded_payload["ILL_lx"].__str__()
+                data.temperature = decoded_payload["TempC_SHT"].__str__()
+
+                data.datetime = datetime
+                data.longitude = location_longitude.__str__()
+                data.latitude = location_latitude.__str__()
+                data.consumed_airtime = airtime.__str__()
+                data.metadata["gateway_id"] = gateway_id.__str__()
+                data.metadata["rssi"] = rssi.__str__()
+                return data
 
     # note: topic can be an array of (topic = string, qos = int) tuples if you want to connect to multiple topics
     # and qos stands for quality of service (defaults to 0)

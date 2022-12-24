@@ -26,9 +26,12 @@ def get_devices(count):
             if lines > 0:
                 data_row = dict()
                 data_row['device_id'] = row[0]
-                data_row['longitude'] = row[1]
-                data_row['latitude'] = row[2]
-                data_row['altitude'] = row[3]
+                data_row['device_type'] = row[1]
+                data_row['longitude'] = row[2]
+                data_row['latitude'] = row[3]
+                data_row['altitude'] = row[4]
+                data_row['packets'] = row[5]
+                data_row['avg_rssi'] = row[6]
                 output.append(data_row)
             lines -= 1
     # return the string with ' quotes because the other ones need to be excaped with \
@@ -50,11 +53,17 @@ def get_statuses_for_device_equ(name, number=1):
             data_row = dict()
             data_row["status_id"] = row[0]
             data_row["device_id"] = row[1]
-            data_row["temperature"] = row[2]
-            data_row["pressure"] = row[3]
-            data_row["light"] = row[4]
-            data_row["time"] = datetime.strftime(row[5], "%Y-%m-%d %H:%M:%S")
-            data_row["consumed_aittime"] = row[6]
+            data_row["battery_v"] = row[2]
+            data_row["battery_stat"] = row[3]
+            data_row["temp_inside"] = row[4]
+            data_row["temp_outside"] = row[5]
+            data_row["pressure"] = row[6]
+            data_row["light"] = row[7]
+            data_row["humidity"] = row[8]
+            data_row["time"] = datetime.strftime(row[9], "%Y-%m-%d %H:%M:%S")
+            data_row["consumed_aittime"] = row[10]
+            data_row["curr_rssi"] = row[11]
+            data_row["gateway"] = row[12]
             output.append(data_row)
 
     cursor.close()
@@ -65,7 +74,7 @@ def get_statuses_for_device_equ(name, number=1):
 def get_devices_equ(name):
     conn = MySQLdb.connect(host="139.144.177.81", user="ADMIN", password="", database="mydatabase")
     cursor = conn.cursor()
-    cursor.execute("SELECT * from status WHERE device_id ORDER BY time DESC")
+    cursor.execute("SELECT * from status WHERE device_id = %s ORDER BY time DESC", (name, ))
     rows_device = cursor.fetchall()
 
     output = list()
@@ -76,10 +85,19 @@ def get_devices_equ(name):
         if len(row) > 3:
             if lines > 0:
                 data_row = dict()
-                data_row['device_id'] = row[0]
-                data_row['longitude'] = row[1]
-                data_row['latitude'] = row[2]
-                data_row['altitude'] = row[3]
+                data_row["status_id"] = row[0]
+                data_row["device_id"] = row[1]
+                data_row["battery_v"] = row[2]
+                data_row["battery_stat"] = row[3]
+                data_row["temp_inside"] = row[4]
+                data_row["temp_outside"] = row[5]
+                data_row["pressure"] = row[6]
+                data_row["light"] = row[7]
+                data_row["humidity"] = row[8]
+                data_row["time"] = datetime.strftime(row[9], "%Y-%m-%d %H:%M:%S")
+                data_row["consumed_aittime"] = row[10]
+                data_row["curr_rssi"] = row[11]
+                data_row["gateway"] = row[12]
                 output.append(data_row)
             lines -= 1
     # return the string with ' quotes because the other ones need to be excaped with \
@@ -102,9 +120,12 @@ def get_all_devices():
             if lines > 0:
                 data_row = dict()
                 data_row['device_id'] = row[0]
-                data_row['longitude'] = row[1]
-                data_row['latitude'] = row[2]
-                data_row['altitude'] = row[3]
+                data_row['device_type'] = row[1]
+                data_row['longitude'] = row[2]
+                data_row['latitude'] = row[3]
+                data_row['altitude'] = row[4]
+                data_row['packets'] = row[5]
+                data_row['avg_rssi'] = row[6]
                 output.append(data_row)
             lines -= 1
     # return the string with ' quotes because the other ones need to be excaped with \
@@ -129,11 +150,17 @@ def get_statuses(count):
                 data_row = dict()
                 data_row["status_id"] = row[0]
                 data_row["device_id"] = row[1]
-                data_row["temperature"] = row[2]
-                data_row["pressure"] = row[3]
-                data_row["light"] = row[4]
-                data_row["time"] = datetime.strftime(row[5], "%Y-%m-%d %H:%M:%S")
-                data_row["consumed_aittime"] = row[6]
+                data_row["battery_v"] = row[2]
+                data_row["battery_stat"] = row[3]
+                data_row["temp_inside"] = row[4]
+                data_row["temp_outside"] = row[5]
+                data_row["pressure"] = row[6]
+                data_row["light"] = row[7]
+                data_row["humidity"] = row[8]
+                data_row["time"] = datetime.strftime(row[9], "%Y-%m-%d %H:%M:%S")
+                data_row["consumed_aittime"] = row[10]
+                data_row["curr_rssi"] = row[11]
+                data_row["gateway"] = row[12]
                 output.append(data_row)
             lines -= 1
     # return the string with ' quotes because the other ones need to be excaped with \
@@ -169,11 +196,17 @@ def get_statuses_for_device_for_time_period(name, time_period="day"):
                 data_row = dict()
                 data_row["status_id"] = row[0]
                 data_row["device_id"] = row[1]
-                data_row["temperature"] = row[2]
-                data_row["pressure"] = row[3]
-                data_row["light"] = row[4]
-                data_row["time"] = datetime.strftime(row[5], "%Y-%m-%d %H:%M:%S")
-                data_row["consumed_aittime"] = row[6]
+                data_row["battery_v"] = row[2]
+                data_row["battery_stat"] = row[3]
+                data_row["temp_inside"] = row[4]
+                data_row["temp_outside"] = row[5]
+                data_row["pressure"] = row[6]
+                data_row["light"] = row[7]
+                data_row["humidity"] = row[8]
+                data_row["time"] = datetime.strftime(row[9], "%Y-%m-%d %H:%M:%S")
+                data_row["consumed_aittime"] = row[10]
+                data_row["curr_rssi"] = row[11]
+                data_row["gateway"] = row[12]
                 output.append(data_row)
 
         cursor.close()
