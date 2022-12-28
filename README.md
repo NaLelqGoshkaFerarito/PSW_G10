@@ -146,7 +146,7 @@ Can be accessed at `base-url/devices/?number=NUM_OF_STATS`.
 
 ### Get devices by name
 Gets a JSON containing all devices called `NAME` from the database in the form of a dictionary. 
-Can be accessed at `base-url/device/?name=NAME`.
+Can be accessed at `base-url/device/?name=NAME`. Deprecated, because it gets *all* statuses, should only be used for testing.
 
 ### Get all devices
 Gets a JSON containing all devices from the database in the form of a dictionary. 
@@ -159,6 +159,11 @@ Can be accessed at `base-url/statuses/?number=NUM_OF_STATS`.
 ### Get a number of statuses for a device
 Gets a JSON containing `NUM_OF_STATS` logs from the database for device `DEVICE_NAME` in the form of a dictionary.
 Can be accessed at `base-url/statuses/device/?name=DEVICE_NAME&number=NUM_OF_STATS`. In case `NUM_OF_STATS` is omitted, one status will be returned
+
+### Get supported data for a sensor type
+Gets a JSON with the supported columns `base-url/device/type/?type=DEVICE_TYPE&all=ZERO_OR_ONE`. 
+All is an optional argument, which lets you choose if you want all columns (ids, metadata, etc.), `1` is `true`. 
+Set it to `0` to only get the data extracted from the payload of the status.
 
 ## Database
 The database is hosted on a server, and the tables are created by the `db_logger`. 

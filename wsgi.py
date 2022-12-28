@@ -74,7 +74,7 @@ def get_statuses_for_device_equ(name, number=1):
 def get_devices_equ(name):
     conn = MySQLdb.connect(host="139.144.177.81", user="ADMIN", password="", database="mydatabase")
     cursor = conn.cursor()
-    cursor.execute("SELECT * from status WHERE device_id = %s ORDER BY time DESC", (name, ))
+    cursor.execute("SELECT * from status WHERE device_id = %s ORDER BY time DESC", (name,))
     rows_device = cursor.fetchall()
 
     output = list()
@@ -171,43 +171,38 @@ def get_statuses(count):
 def get_statuses_for_device_for_time_period(name, time_period="day"):
     conn = MySQLdb.connect(host="139.144.177.81", user="ADMIN", password="", database="mydatabase")
     cursor = conn.cursor()
-    cursor.execute("SELECT * from device")
-    rows_status = str()
+    # the input is problematic so the next 2 lines are needed
+    # name_processed = name.replace("'", "")
+    # time_period_processed = time_period.replace("'", "")
 
-    if time_period == "day":
-        cursor.execute("select * from status WHERE DATE_SUB(current_date(), interval 1 day)")
-        rows_status = cursor.fetchall()
-    elif time_period == "week":
-        cursor.execute("select * from status WHERE DATE_SUB(current_date(), interval 1 week)")
-        rows_status = cursor.fetchall()
-    elif time_period == "month":
-        cursor.execute("select * from status WHERE DATE_SUB(current_date(), interval 1 month)")
-        rows_status = cursor.fetchall()
+    # args = ("2022-12-12".replace("'", ""), "py-saxion".replace("'", ""))
+    command = "select * from status WHERE time > DATE_SUB(CURRENT_DATE(), 1 month) AND device_id = 'py-saxion'"
+    cursor.execute(command)
+    rows_status = cursor.fetchall()
     # else get the statuses for the last hour
     # else:
     #     cursor.execute("select * from status where time >= DATE_SUB(localtimestamp(), interval 1 hour)")
 
-        rows_status = cursor.fetchall()
-        output = list()
+    output = list()
 
-        for row in rows_status:
-            # if row is an actual row
-            if len(row) > 3:
-                data_row = dict()
-                data_row["status_id"] = row[0]
-                data_row["device_id"] = row[1]
-                data_row["battery_v"] = row[2]
-                data_row["battery_stat"] = row[3]
-                data_row["temp_inside"] = row[4]
-                data_row["temp_outside"] = row[5]
-                data_row["pressure"] = row[6]
-                data_row["light"] = row[7]
-                data_row["humidity"] = row[8]
-                data_row["time"] = datetime.strftime(row[9], "%Y-%m-%d %H:%M:%S")
-                data_row["consumed_aittime"] = row[10]
-                data_row["curr_rssi"] = row[11]
-                data_row["gateway"] = row[12]
-                output.append(data_row)
+    for row in rows_status:
+        # if row is an actual row
+        if len(row) > 3:
+            data_row = dict()
+            data_row["status_id"] = row[0]
+            data_row["device_id"] = row[1]
+            data_row["battery_v"] = row[2]
+            data_row["battery_stat"] = row[3]
+            data_row["temp_inside"] = row[4]
+            data_row["temp_outside"] = row[5]
+            data_row["pressure"] = row[6]
+            data_row["light"] = row[7]
+            data_row["humidity"] = row[8]
+            data_row["time"] = datetime.strftime(row[9], "%Y-%m-%d %H:%M:%S")
+            data_row["consumed_aittime"] = row[10]
+            data_row["curr_rssi"] = row[11]
+            data_row["gateway"] = row[12]
+            output.append(data_row)
 
         cursor.close()
         return output
@@ -285,10 +280,54 @@ def statuses_datetime():
     # ask for input in the format "/statuses/device_time/?name=DEVICE_NAME&time_period=TIME_PERIOD_STR"
     name = str(request.args.get("name"))
     try:
-        time_period = str(request.args.get("number"))
+        time_period = str(request.args.get("time_period"))
     except:
         time_period = "day"
     return json.dumps(get_statuses_for_device_for_time_period(name, time_period))
+
+
+# returns column information
+@app.route("/device/type/")
+def device_type_type():
+    # ask for input in the format "/device/type/?type=DEVICE_TYPE&all=ZERO_OR_ONE"
+    type = str(request.args.get("type"))
+    try:
+        all_columns = int(request.args.get("all"))
+    except:
+        all_columns = 1
+
+    sens = list()
+    if all_columns > 0:
+        sens.append("status_id")
+        sens.append("device_id")
+
+    if type == "py":
+        sens.append("temp_in")
+        sens.append("pressure")
+        sens.append("light")
+
+    elif type == "lht_light":
+        sens.append("b_status")
+        sens.append("b_voltage")
+        sens.append("temp_out")
+        sens.append("light")
+
+    elif type == "lht_temp":
+        sens.append("b_status")
+        sens.append("b_voltage")
+        sens.append("temp_out")
+        sens.append("light")
+
+    else:
+        return "<p>Unsupported sensor type.</p>"
+
+    if all_columns > 0:
+        sens.append("time")
+        sens.append("consumed_airtime")
+        sens.append("curr_rssi")
+        sens.append("gateway")
+
+    return json.dumps(sens)
 
 
 if __name__ == "__main__":
