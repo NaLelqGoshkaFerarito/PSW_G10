@@ -1,5 +1,5 @@
 # PSW_G10
-Repo for Project Software (Group 10)
+Repo for Project Software weather application (Group 10)
 
 # Loggers
 The loggers are responsible for logging the messages we receive. There are five different loggers, some of which use others for debugging purposes. Every single one has the method `log()`, which allows us to use them interchangeably.
@@ -11,11 +11,11 @@ The most widely used logger. It outputs text with a timestamp to the console. Th
 Logs text + timestamp to a `.txt` file. It was a prototype for the next logger.
 
 ## CSV logger
-Logs `PYData` objects to a `.csv` file, otherwise prints status messages to the console. It was used because `.csv` files made testing and prototyping easier. 
+Logs `PYData` objects to a `.csv` file, otherwise prints status messages to the console. It was used because `.csv` files made testing and prototyping easier. When it was implemented `py` sensors were the only type of sensors supported.
 
 ## DB logger
-Logs `PYData`, `LHTDataTemp` and `LHTDataLight` objects to a database, otherwise prints status messages to the console. It made the implementation much more streamlined.
-# Clients explanation
+Logs `PYData`, `LHTDataTemp` and `LHTDataLight` objects to a database, otherwise prints status messages to the console. It made the implementation much more streamlined. Before it was implemented, the only way to log to the database was through a scan of the `.csv` file from the last logger. This meant that a lot more code was needed
+# Broker interaction
 For a quick start read `Example code`
 
 The two clients separate the functionality, which technically can be implemented with only one. A clearer description is present below. There is also a class which enforces a standard for data across the whole application
@@ -55,8 +55,8 @@ The member variables are as follows:
 
 ### SI-Units
 - `pressure` - Pascal [Pa]
-- `temperature` - Centrigade [°C]
-- `light` - Lux (Techincally not an SI-unit) 
+- `temperature` - Degrees centigrade [°C]
+- `light` - Lux (Technically not an SI-unit) 
 - `consumed_airtime` - seconds [s]
 
 ## ClientPlain
@@ -81,7 +81,7 @@ This client is mainly for data storage and tracking of IDs
 For the sake of brevity a description of those is omitted, but they are just getters.
 
 ## ClientMQTT
-Receives data from an MQTT broker and cleans it up so that out `BrokerInteract` class can implement it. A prettier implementation of the default client. 
+Receives data from an MQTT broker and cleans it up so that the MQTT functionality can be implemented. A prettier implementation of the default client. 
 
 ### Variables
 1. Static variables
@@ -95,9 +95,9 @@ Receives data from an MQTT broker and cleans it up so that out `BrokerInteract` 
 ### Functions
 This is the most important part of the directory, because these functions are responsible for interfacing with the broker and decoding the message. You can use all functions, but it is recommended that you only use `Interface functions` 
 1. Static functions
-- `decode` - (see also `txts`->`example_data.json`) this method has 3 steps i. Type change/cleanup - the input data changes types from `bytes` to `string` to `json`
-ii. Data extraction - the data is extracted from the `json`
-iii. Data entry - the data is entered into a `Data object` and returned
+- `decode` - (see also `txts`->`example_data.json` and `example_data`) this method has 3 steps i. Type change/cleanup - the input data changes types from `bytes` to `string` to `json`
+ii. Data extraction - the data is extracted from the `json` and the type of the sensor is checked.
+iii. Data entry - the data is entered into its respective object and returned
 
 2. Instance functions
 - `constructor` - initializes instance values and sets the password and username of the client
@@ -111,7 +111,7 @@ iii. Data entry - the data is entered into a `Data object` and returned
    
 5. Callback functions
 These have the syntax `_on_function` and are called every time `function` is called
-- `_on_message` - decodes the message and logs it (also decrements `__connection_timeout`)
+- `_on_message` - decodes the message and logs it
 - `_on_connect` - connect, unless the connection is bad (in which case disconnect)
 - `_on_disconnect` - not much was added (aside from logging)
 
@@ -130,7 +130,7 @@ mqtt.loop_forever()
 ```
 *Note: For more detailed explanations reference the appropriate chapters*
 
-The program creates a default plaintext broker (we only need a default constructor, because the broker used is always the same). This broker gives the necessary data to the MQTT broker class, which interfaces with the broker. It then runs indefinitely and logs data in the meantime.
+The program creates a default plaintext broker (we only need a default constructor, because the broker used is always the same). This broker gives the necessary data to the MQTT client class, which interfaces with the broker. It then runs indefinitely and logs data in the meantime.
 
 # API
 For the time being the server application we are using requires the user to open the site manually at least once and dismiss the message.
@@ -144,8 +144,8 @@ Just a smiley
 Gets a JSON containing `NUM_OF_DEVS` devices from the database in the form of a dictionary.
 Can be accessed at `base-url/devices/?number=NUM_OF_STATS`.
 
-### Get devices by name
-Gets a JSON containing all devices called `NAME` from the database in the form of a dictionary. 
+### Get statuses by device name
+Gets a JSON containing all statuses for the device called `NAME` from the database in the form of a dictionary. 
 Can be accessed at `base-url/device/?name=NAME`. Deprecated, because it gets *all* statuses, should only be used for testing.
 
 ### Get all devices
