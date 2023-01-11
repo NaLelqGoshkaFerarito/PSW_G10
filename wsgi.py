@@ -172,12 +172,13 @@ def get_statuses_for_device_for_time_period(name, time_period="day"):
     conn = MySQLdb.connect(host="139.144.177.81", user="ADMIN", password="", database="mydatabase")
     cursor = conn.cursor()
     # the input is problematic so the next 2 lines are needed
+    # they didn't help ;-;
     # name_processed = name.replace("'", "")
     # time_period_processed = time_period.replace("'", "")
 
     # args = ("2022-12-12".replace("'", ""), "py-saxion".replace("'", ""))
-    command = "select * from status WHERE time > DATE_SUB(CURRENT_DATE(), 1 month) AND device_id = 'py-saxion'"
-    cursor.execute(command)
+    command = "select * from status WHERE time > DATE_SUB(CURRENT_DATE(), INTERVAL 1 %s) AND device_id = '%s'"
+    cursor.execute(command, (time_period, name),)
     rows_status = cursor.fetchall()
     # else get the statuses for the last hour
     # else:
