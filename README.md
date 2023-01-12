@@ -140,9 +140,9 @@ The final base url is not decided yet, but it will be in the format `https://105
 ### Default
 Just a smiley
 
-### Get a number of devices
-Gets a JSON containing `NUM_OF_DEVS` devices from the database in the form of a dictionary.
-Can be accessed at `base-url/devices/?number=NUM_OF_STATS`.
+### Get all devices
+Gets a JSON containing all the devices from the database in the form of a dictionary.
+Can be accessed at `base-url/devices/`.
 
 ### Get statuses by device name
 Gets a JSON containing all statuses for the device called `NAME` from the database in the form of a dictionary. 

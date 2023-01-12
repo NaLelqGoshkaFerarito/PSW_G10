@@ -10,7 +10,7 @@ from clients.client_plain import ClientPlain
 app = Flask(__name__)
 
 
-def get_devices(count):
+def get_devices():
     # database interaction setup
     conn = MySQLdb.connect(host="139.144.177.81", user="ADMIN", password="", database="mydatabase")
     cursor = conn.cursor()
@@ -19,21 +19,18 @@ def get_devices(count):
 
     output = list()
 
-    lines = count
     for row in rows_device:
         # if row is an actual row
         if len(row) > 3:
-            if lines > 0:
-                data_row = dict()
-                data_row['device_id'] = row[0]
-                data_row['device_type'] = row[1]
-                data_row['longitude'] = row[2]
-                data_row['latitude'] = row[3]
-                data_row['altitude'] = row[4]
-                data_row['packets'] = row[5]
-                data_row['avg_rssi'] = row[6]
-                output.append(data_row)
-            lines -= 1
+            data_row = dict()
+            data_row['device_id'] = row[0]
+            data_row['device_type'] = row[1]
+            data_row['longitude'] = row[2]
+            data_row['latitude'] = row[3]
+            data_row['altitude'] = row[4]
+            data_row['packets'] = row[5]
+            data_row['avg_rssi'] = row[6]
+            output.append(data_row)
     # return the string with ' quotes because the other ones need to be excaped with \
     cursor.close()
     return output.__str__()
@@ -173,13 +170,13 @@ def get_statuses_for_device_for_time_period(name, time_period="day"):
     cursor = conn.cursor()
     # the input is problematic so the next 2 lines are needed
     # they didn't help ;-;
-    name_processed = name.replace("'", "")
     time_period_processed = time_period.replace("'", "")
+    name_processed = name.__str__().replace("'", "")
 
-    # args = ("2022-12-12".replace("'", ""), "py-saxion".replace("'", ""))
+    args = (time_period_processed, name_processed)
 
-    command = "select * from status WHERE time > DATE_SUB(CURRENT_DATE(), INTERVAL 1 '%s') AND device_id = '%s'"
-    cursor.execute(command, (time_period_processed, name_processed),)
+    command = "select * from status WHERE (time > DATE_SUB(CURRENT_DATE(), INTERVAL 1 %s)) AND (device_id = \'%s\')"
+    cursor.execute(command, args)
     rows_status = cursor.fetchall()
     # else get the statuses for the last hour
     # else:
@@ -206,8 +203,8 @@ def get_statuses_for_device_for_time_period(name, time_period="day"):
             data_row["gateway"] = row[12]
             output.append(data_row)
 
-        cursor.close()
-        return output
+    cursor.close()
+    return name.__str__()
 
 
 def get_messages_deprecated(count):
@@ -245,9 +242,7 @@ def all_devices():
 # get a number of devices
 @app.route("/devices/")
 def number_of_devices():
-    # ask for input in the format "/devices/?number=NUM_OF_DEVICES"
-    query = int(request.args.get("number"))
-    return json.dumps(get_devices(query))
+    return json.dumps(get_devices())
 
 
 @app.route("/device/")
