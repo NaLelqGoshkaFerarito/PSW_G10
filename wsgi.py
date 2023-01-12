@@ -168,21 +168,17 @@ def get_statuses(count):
 def get_statuses_for_device_for_time_period(name, time_period="day"):
     conn = MySQLdb.connect(host="139.144.177.81", user="ADMIN", password="", database="mydatabase")
     cursor = conn.cursor()
-    if time_period == "hour":
+    if time_period == "week":
         cursor.execute(
-            "SELECT * from status WHERE device_id = %s ORDER BY time AND time > (DATE_SUB(CURRENT_DATE(), INTERVAL 1 hour))",
-            (name,))
-    elif time_period == "week":
-        cursor.execute(
-            "SELECT * from status WHERE device_id = %s ORDER BY time AND time > (DATE_SUB(CURRENT_DATE(), INTERVAL 1 week))",
+            "SELECT * from status WHERE device_id = %s AND time > (DATE_SUB(CURRENT_DATE(), INTERVAL 1 week)) ORDER BY time",
             (name,))
     elif time_period == "month":
         cursor.execute(
-            "SELECT * from status WHERE device_id = %s ORDER BY time AND time > (DATE_SUB(CURRENT_DATE(), INTERVAL 1 month))",
+            "SELECT * from status WHERE device_id = %s AND time > (DATE_SUB(CURRENT_DATE(), INTERVAL 1 month)) ORDER BY time ",
             (name,))
     else:
         cursor.execute(
-            "SELECT * from status WHERE device_id = %s ORDER BY time AND time > (DATE_SUB(CURRENT_DATE(), INTERVAL 1 day))",
+            "SELECT * from status WHERE device_id = %s AND time > (DATE_SUB(CURRENT_DATE(), INTERVAL 1 day)) ORDER BY time",
             (name,))
     rows_status = cursor.fetchall()
     output = list()

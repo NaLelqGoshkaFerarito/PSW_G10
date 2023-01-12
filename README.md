@@ -160,6 +160,14 @@ Can be accessed at `base-url/statuses/?number=NUM_OF_STATS`.
 Gets a JSON containing `NUM_OF_STATS` logs from the database for device `DEVICE_NAME` in the form of a dictionary.
 Can be accessed at `base-url/statuses/device/?name=DEVICE_NAME&number=NUM_OF_STATS`. In case `NUM_OF_STATS` is omitted, one status will be returned
 
+### Get all statuses for a device in a given time period
+Gets a JSON containing logs from the past `TIME_PERIOD_STR` for device `DEVICE_NAME` in the form of a dictionary.
+Can be accessed at `base-url/statuses/device_time/?name=DEVICE_NAME&time_period=TIME_PERIOD_STR`. In case `TIME_PERIOD_STR` is omitted, the statuses for the last day will be returned.
+Possible values for `TIME_PERIOD_STR`: 
+- `week`
+- `month`
+- anything else (will return the statuses from the last `day`)
+
 ### Get supported data for a sensor type
 Gets a JSON with the supported columns `base-url/device/type/?type=DEVICE_TYPE&all=ZERO_OR_ONE` in a list. 
 All is an optional argument, which lets you choose if you want all columns (ids, metadata, etc.), `1` is `true`. 
