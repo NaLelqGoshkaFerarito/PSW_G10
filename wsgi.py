@@ -168,20 +168,23 @@ def get_statuses(count):
 def get_statuses_for_device_for_time_period(name, time_period="day"):
     conn = MySQLdb.connect(host="139.144.177.81", user="ADMIN", password="", database="mydatabase")
     cursor = conn.cursor()
-    # the input is problematic so the next 2 lines are needed
-    # they didn't help ;-;
-    time_period_processed = time_period.replace("'", "")
-    name_processed = name.__str__().replace("'", "")
-
-    args = (time_period_processed, name_processed)
-
-    command = "select * from status WHERE (time > DATE_SUB(CURRENT_DATE(), INTERVAL 1 %s)) AND (device_id = \'%s\')"
-    cursor.execute(command, args)
+    if time_period == "hour":
+        cursor.execute(
+            "SELECT * from status WHERE device_id = %s ORDER BY time AND time > (DATE_SUB(CURRENT_DATE(), INTERVAL 1 hour))",
+            (name,))
+    elif time_period == "week":
+        cursor.execute(
+            "SELECT * from status WHERE device_id = %s ORDER BY time AND time > (DATE_SUB(CURRENT_DATE(), INTERVAL 1 week))",
+            (name,))
+    elif time_period == "month":
+        cursor.execute(
+            "SELECT * from status WHERE device_id = %s ORDER BY time AND time > (DATE_SUB(CURRENT_DATE(), INTERVAL 1 month))",
+            (name,))
+    else:
+        cursor.execute(
+            "SELECT * from status WHERE device_id = %s ORDER BY time AND time > (DATE_SUB(CURRENT_DATE(), INTERVAL 1 day))",
+            (name,))
     rows_status = cursor.fetchall()
-    # else get the statuses for the last hour
-    # else:
-    #     cursor.execute("select * from status where time >= DATE_SUB(localtimestamp(), interval 1 hour)")
-
     output = list()
 
     for row in rows_status:
@@ -202,9 +205,7 @@ def get_statuses_for_device_for_time_period(name, time_period="day"):
             data_row["curr_rssi"] = row[11]
             data_row["gateway"] = row[12]
             output.append(data_row)
-
-    cursor.close()
-    return name.__str__()
+    return output
 
 
 def get_messages_deprecated(count):
@@ -275,7 +276,10 @@ def number_of_statuses_for_device():
 @app.route("/statuses/device_time/")
 def statuses_datetime():
     # ask for input in the format "/statuses/device_time/?name=DEVICE_NAME&time_period=TIME_PERIOD_STR"
-    name = str(request.args.get("name"))
+    try:
+        name = str(request.args.get("name"))
+    except:
+        name = "py-wierden"
     try:
         time_period = str(request.args.get("time_period"))
     except:
