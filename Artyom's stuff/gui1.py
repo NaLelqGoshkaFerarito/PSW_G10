@@ -61,8 +61,8 @@ def randomlist(n, metric):
     rand_list=[]                                                   
     if metric == 'Temperature':
         for i in range(n):
-            rand_list.append(status_result[0])
-           # rand_list.append(random.random() * 7 + 15 * math.sin(i/5))
+           # rand_list.append(status_result[0])
+            rand_list.append(random.random() * 7 + 15 * math.sin(i/5))
         return rand_list
     elif metric == 'Humidity':
         for i in range(n):
@@ -228,8 +228,8 @@ class SensorData:   #class that contains all values for given sensors in given p
             self.dataframe[metric] = randomlist(numbet_of_points, metric=metric)
 
 # doesnt work:
-        #cursor.execute("SELECT temp_in from status where device_id = %s", sensorid)
-        #self.dataframe['Temperature'] = cursor.fetchall()
+     #   cursor.execute("SELECT temp_in from status where device_id = %s", sensorid)
+      #  self.dataframe['Temperature'] = cursor.fetchall()
     
 def update_label(self):
     self.label.configure(text = (self.period[0] + " - " + self.period[-1]))

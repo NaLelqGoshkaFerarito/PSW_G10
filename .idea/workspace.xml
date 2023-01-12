@@ -5,7 +5,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="87a6232f-ef40-4ab2-9d4c-b908d091b313" name="Default Changelist" comment="Added custom py sensor and updated default client constructor.&#10;&#10;Warning: The decoder doesnt work with the current custome py-sensor. Decoder needs to be refactored.">
-      <change beforePath="$PROJECT_DIR$/gui1.py" beforeDir="false" afterPath="$PROJECT_DIR$/gui1.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/PSW_G10.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/sqldialects.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/GUI_new.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/plot_day.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/plot_week.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gui.py" beforeDir="false" afterPath="$PROJECT_DIR$/Artyom's stuff/gui.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gui1.py" beforeDir="false" afterPath="$PROJECT_DIR$/Artyom's stuff/gui1.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/gui1_map_position.py" beforeDir="false" afterPath="$PROJECT_DIR$/Artyom's stuff/gui1_map_position.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,6 +56,7 @@
   "keyToString": {
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "WebServerToolWindowFactoryState": "false",
     "last_opened_file_path": "E:/Github/PSW_G10/wsgi.py",
     "node.js.detected.package.eslint": "true",
@@ -52,19 +66,25 @@
     "nodejs_package_manager_path": "npm",
     "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable",
     "vue.rearranger.settings.migration": "true"
+  },
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "mysql"
+    ]
   }
 }]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\jesse\Documents\GitHub\PSW_G10\Artyom's stuff" />
       <recent name="C:\Y2\Q2\ProjSW\mqtt_beta\example_data" />
       <recent name="C:\Y2\Q2\ProjSW\mqtt_beta\txts" />
       <recent name="C:\Y2\Q2\ProjSW\mqtt_beta\loggers" />
       <recent name="C:\Y2\Q2\ProjSW\mqtt_beta\client" />
     </key>
   </component>
-  <component name="RunManager">
-    <configuration name="alt_main_1" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="mqtt_beta" />
+  <component name="RunManager" selected="Python.GUI_new">
+    <configuration name="GUI_new" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="PSW_G10" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
       <envs>
@@ -76,7 +96,7 @@
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/alt_main_1.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/GUI_new.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -197,19 +217,19 @@
     </configuration>
     <list>
       <item itemvalue="Python.wsgi" />
+      <item itemvalue="Python.GUI_new" />
       <item itemvalue="Python.py_group10" />
-      <item itemvalue="Python.alt_main_1" />
       <item itemvalue="Python.lht_gronau" />
       <item itemvalue="Python.lht_saxion" />
       <item itemvalue="Python.lht_wierden" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.GUI_new" />
         <item itemvalue="Python.py_group10" />
         <item itemvalue="Python.lht_wierden" />
         <item itemvalue="Python.lht_saxion" />
         <item itemvalue="Python.lht_gronau" />
-        <item itemvalue="Python.alt_main_1" />
       </list>
     </recent_temporary>
   </component>
@@ -309,14 +329,18 @@
     </watches-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/alt_main_1_py$main.coverage" NAME="main Coverage Results" MODIFIED="1673351612289" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/alt_main_1_py$gui1.coverage" NAME="gui1 Coverage Results" MODIFIED="1673487749394" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/alt_main_1_py$lht_wierden.coverage" NAME="lht_wierden Coverage Results" MODIFIED="1673351609630" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/alt_main_1_py$py_group10.coverage" NAME="py_group10 Coverage Results" MODIFIED="1673462753356" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/alt_main_1_py$wsgi.coverage" NAME="wsgi Coverage Results" MODIFIED="1673351595902" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/alt_main_1_py$lht_gronau.coverage" NAME="lht_gronau Coverage Results" MODIFIED="1673351604751" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/alt_main_1_py$lht_saxion.coverage" NAME="lht_saxion Coverage Results" MODIFIED="1673351606746" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/alt_main_1_py$alt_main_1.coverage" NAME="alt_main_1 Coverage Results" MODIFIED="1673351602113" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/alt_main_1_py$gui1_map_position.coverage" NAME="gui1_map_position Coverage Results" MODIFIED="1673486103278" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/alt_main_1_py$main.coverage" NAME="main Coverage Results" MODIFIED="1673351612289" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/alt_main_1_py$wsgi.coverage" NAME="wsgi Coverage Results" MODIFIED="1673351595902" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/PSW_G10$GUI_new.coverage" NAME="GUI_new Coverage Results" MODIFIED="1673557454776" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/alt_main_1_py$py_group10.coverage" NAME="py_group10 Coverage Results" MODIFIED="1673462753356" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/alt_main_1_py$lht_saxion.coverage" NAME="lht_saxion Coverage Results" MODIFIED="1673351606746" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/PSW_G10$gui1.coverage" NAME="gui1 Coverage Results" MODIFIED="1673521803240" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/PSW_G10$gui.coverage" NAME="gui Coverage Results" MODIFIED="1673347212485" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/alt_main_1_py$gui1.coverage" NAME="gui1 Coverage Results" MODIFIED="1673487749394" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/alt_main_1_py$alt_main_1.coverage" NAME="alt_main_1 Coverage Results" MODIFIED="1673351602113" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/PSW_G10$gui1_map_position.coverage" NAME="gui1_map_position Coverage Results" MODIFIED="1673347739381" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
