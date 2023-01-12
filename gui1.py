@@ -11,10 +11,24 @@ import babel.numbers
 from tkinter import ttk
 import mysql.connector
 
+#connect to mysql
+conn = mysql.connector.connect(host="139.144.177.81", user="ADMIN", password="", database="mydatabase")
+if conn.is_connected():
+    print("connected")
+cursor = conn.cursor()
 
 
-sensors = ['sensor1', 'sensor2', 'sensor3']                      #sensor ids
-metrics = ['Temperature', 'Humidity', 'Pressure', 'Light']       
+cursor.execute("SELECT name, type, longitude, latitude, altitude, packets, avg_rssi from device")
+device_result = cursor.fetchall()
+cursor.execute("SELECT temp_in,temp_out, pressure, light, humidity, time, consumed_airtime, curr_rssi, gateway from status")
+status_result = cursor.fetchall()
+
+sensors = []
+
+for i in device_result:
+    sensors.append(i[0])
+                     #sensor ids
+metrics = ['Temperature', 'Pressure', 'Light', 'Humidity']
 colors = ['red', 'orange', 'green', 'cyan', 'blue', 'purple']    
 
 
@@ -42,12 +56,13 @@ def calulate_date(month, day):
 
 
             
-
+#hardcoded stuff that needs to go
 def randomlist(n, metric):
     rand_list=[]                                                   
     if metric == 'Temperature':
         for i in range(n):
-            rand_list.append(random.random() * 7 + 15 * math.sin(i/5))
+            rand_list.append(status_result[0])
+           # rand_list.append(random.random() * 7 + 15 * math.sin(i/5))
         return rand_list
     elif metric == 'Humidity':
         for i in range(n):
@@ -201,6 +216,7 @@ def mapview(x):
     map_widget.set_position(coords[0], coords[1], marker=True)
 
 
+# This class seems very weird imo
 class SensorData:   #class that contains all values for given sensors in given period
     def __init__(self, period, sensorid):
         self.start = period[0]
@@ -210,6 +226,10 @@ class SensorData:   #class that contains all values for given sensors in given p
         self.metrics = metrics
         for metric in self.metrics:
             self.dataframe[metric] = randomlist(numbet_of_points, metric=metric)
+
+# doesnt work:
+        #cursor.execute("SELECT temp_in from status where device_id = %s", sensorid)
+        #self.dataframe['Temperature'] = cursor.fetchall()
     
 def update_label(self):
     self.label.configure(text = (self.period[0] + " - " + self.period[-1]))
@@ -439,7 +459,7 @@ class MyWindow:  #main window
             legend.bind("<Button-1>", make_lambda(sensor))
             count += 1
         self.ax.set_title(f'Time Vs. {metrics[self.r_button_val.get()]}')
-        self.ax.grid(b = True)
+        self.ax.grid(visible = True)
         self.line.draw()
         
 # for i in range(2):
@@ -470,9 +490,6 @@ class MyWindow:  #main window
     
     
 def main():
-    conn = mysql.connector.connect(host="139.144.177.81", user="ADMIN", password="", database="mydatabase")
-    if conn.is_connected():
-        print("connected")
     root = tk.Tk()
     #second = tk.Tk()
     app = MyWindow(master = root)
