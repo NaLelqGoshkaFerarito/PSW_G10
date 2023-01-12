@@ -17,6 +17,25 @@ class PYData:
         self.metadata = dict()
 
 
+# our custom py sensor
+class CustomPY:
+    def __init__(self):
+        self.device_id = ""
+
+        # decoded payload
+        self.light = ""
+        self.temperature = ""
+        self.humidity = ""
+
+        # other data
+        self.datetime = ""
+        self.consumed_airtime = ""
+        self.latitude = ""
+        self.longitude = ""
+        self.altitude = ""
+        self.metadata = dict()
+
+
 # lht illumination sensor data
 class LHTDataLight:
     def __init__(self):

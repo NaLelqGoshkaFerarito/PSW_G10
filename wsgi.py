@@ -173,12 +173,13 @@ def get_statuses_for_device_for_time_period(name, time_period="day"):
     cursor = conn.cursor()
     # the input is problematic so the next 2 lines are needed
     # they didn't help ;-;
-    # name_processed = name.replace("'", "")
-    # time_period_processed = time_period.replace("'", "")
+    name_processed = name.replace("'", "")
+    time_period_processed = time_period.replace("'", "")
 
     # args = ("2022-12-12".replace("'", ""), "py-saxion".replace("'", ""))
-    command = "select * from status WHERE time > DATE_SUB(CURRENT_DATE(), INTERVAL 1 %s) AND device_id = '%s'"
-    cursor.execute(command, (time_period, name),)
+
+    command = "select * from status WHERE time > DATE_SUB(CURRENT_DATE(), INTERVAL 1 '%s') AND device_id = '%s'"
+    cursor.execute(command, (time_period_processed, name_processed),)
     rows_status = cursor.fetchall()
     # else get the statuses for the last hour
     # else:
@@ -306,6 +307,11 @@ def device_type_type():
         sens.append("temp_in")
         sens.append("pressure")
         sens.append("light")
+
+    if type == "py-custom":
+        sens.append("temp_out")
+        sens.append("light")
+        sens.append("humidity")
 
     elif type == "lht_light":
         sens.append("b_status")

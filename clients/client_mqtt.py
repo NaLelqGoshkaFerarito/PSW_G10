@@ -2,6 +2,7 @@ import paho.mqtt.client as mqtt
 from clients.data import PYData
 from clients.data import LHTDataTemp
 from clients.data import LHTDataLight
+from clients.data import CustomPY
 import json
 from loggers.db_logger import DBLogger
 import re
@@ -81,13 +82,22 @@ class ClientMQTT:
         if re.findall("\Apy-", device_id):
             ClientMQTT.__logger.log(f"Currently logging a py sensor")
             location_altitude = location["altitude"]
-            data = PYData()
+
             # store the data in a predefined data object
+
+            try:
+                data = PYData()
+                data.pressure = decoded_payload["pressure"].__str__()
+                data.light = decoded_payload["light"].__str__()
+                data.temperature = decoded_payload["temperature"].__str__()
+            except:
+                data = CustomPY()
+                data.light = decoded_payload["bytes"][1]
+                data.humidity = decoded_payload["bytes"][0]
+                data.temperature = decoded_payload["bytes"][2]
+
             data.device_id = device_id.__str__()
             data.datetime = datetime
-            data.pressure = decoded_payload["pressure"].__str__()
-            data.light = decoded_payload["light"].__str__()
-            data.temperature = decoded_payload["temperature"].__str__()
             data.longitude = location_longitude.__str__()
             data.latitude = location_latitude.__str__()
             data.altitude = location_altitude.__str__()

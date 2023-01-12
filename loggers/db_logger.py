@@ -3,6 +3,7 @@ from datetime import datetime
 from clients.data import PYData
 from clients.data import LHTDataLight
 from clients.data import LHTDataTemp
+from clients.data import CustomPY
 from .console_logger import ConsoleLogger
 import MySQLdb
 
@@ -16,7 +17,7 @@ class DBLogger(ILogger):
 
     def log(self, data):
         # if data is a message from the MQTT broker save to the database
-        if type(data) == PYData or type(data) == LHTDataLight or type(data) == LHTDataTemp:
+        if type(data) == CustomPY or type(data) == PYData or type(data) == LHTDataLight or type(data) == LHTDataTemp:
             conn = MySQLdb.connect(host="139.144.177.81", user="ADMIN", password="", database="mydatabase")
             cursor = conn.cursor()
             cursor.execute("CREATE TABLE IF NOT EXISTS device("
@@ -56,7 +57,21 @@ class DBLogger(ILogger):
                     "time, consumed_airtime, curr_rssi, gateway) "
                     "VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
                     (data.device_id, data.temperature, data.pressure, data.light,
-                     data.datetime, data.consumed_airtime.replace("s", ""), data.metadata["rssi"], data.metadata["gateway_id"]))
+                     data.datetime, data.consumed_airtime.replace("s", ""), data.metadata["rssi"],
+                     data.metadata["gateway_id"]))
+
+            elif type(data) == CustomPY:
+                cursor.execute(
+                    "INSERT IGNORE INTO device(name, type, longitude, latitude,  altitude) "
+                    "VALUES (%s, %s, %s, %s, %s)",
+                    (data.device_id, "py-custom", data.longitude, data.latitude, data.altitude))
+                cursor.execute(
+                    "INSERT INTO status(device_id, temp_out, light, humidity, "
+                    "time, consumed_airtime, curr_rssi, gateway) "
+                    "VALUES (%s, %s, %s, %s, %s, %s, %s, %s)",
+                    (data.device_id, data.temperature, data.light, data.humidity,
+                     data.datetime, data.consumed_airtime.replace("s", ""), data.metadata["rssi"],
+                     data.metadata["gateway_id"]))
 
             elif type(data) == LHTDataTemp:
                 cursor.execute(
@@ -67,8 +82,10 @@ class DBLogger(ILogger):
                     "INSERT INTO status(device_id, b_status, b_voltage, temp_in, temp_out, humidity, "
                     "time, consumed_airtime, curr_rssi, gateway) "
                     "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
-                    (data.device_id, data.b_voltage, data.b_status, data.temperature_inside, data.temperature_outside, data.humidity,
-                     data.datetime, data.consumed_airtime.replace("s", ""), data.metadata["rssi"], data.metadata["gateway_id"]))
+                    (data.device_id, data.b_voltage, data.b_status, data.temperature_inside, data.temperature_outside,
+                     data.humidity,
+                     data.datetime, data.consumed_airtime.replace("s", ""), data.metadata["rssi"],
+                     data.metadata["gateway_id"]))
 
             else:
                 cursor.execute(
@@ -80,7 +97,8 @@ class DBLogger(ILogger):
                     "time, consumed_airtime, curr_rssi, gateway) "
                     "VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
                     (data.device_id, data.b_voltage, data.b_status, data.temperature, data.light, data.humidity,
-                     data.datetime, data.consumed_airtime.replace("s", ""), data.metadata["rssi"], data.metadata["gateway_id"]))
+                     data.datetime, data.consumed_airtime.replace("s", ""), data.metadata["rssi"],
+                     data.metadata["gateway_id"]))
 
             # update No. of packets
             cursor.execute("UPDATE device SET device.packets = ("
