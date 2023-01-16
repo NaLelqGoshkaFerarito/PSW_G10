@@ -262,15 +262,5 @@ if __name__ == '__main__':
     button_temp_lhtsax_week.pack(side="top")
     button_temp_lhtwie_week.pack(side="top")
 
-    fig = Figure()
-    canvas = FigureCanvasTkAgg(fig, master=root)
-    canvas.draw()
-    # canvas.get_tk_widget().pack()
-
-    # creating the Matplotlib toolbar
-    toolbar = NavigationToolbar2Tk(canvas, root)
-    toolbar.update()
-
-    # placing the toolbar on the Tkinter window
-    canvas.get_tk_widget().pack()
+   
     root.mainloop()
