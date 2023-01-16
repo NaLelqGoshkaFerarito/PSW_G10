@@ -4,21 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="87a6232f-ef40-4ab2-9d4c-b908d091b313" name="Default Changelist" comment="Added custom py sensor and updated default client constructor.&#10;&#10;Warning: The decoder doesnt work with the current custome py-sensor. Decoder needs to be refactored.">
-      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/PSW_G10.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/sqldialects.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/GUI_new.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/plot_day.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/plot_week.py" afterDir="false" />
+    <list default="true" id="87a6232f-ef40-4ab2-9d4c-b908d091b313" name="Default Changelist" comment="Added GUI functionality:&#10;Created functions to make SQL queries and plot these metrics over a given period.">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gui.py" beforeDir="false" afterPath="$PROJECT_DIR$/Artyom's stuff/gui.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gui1.py" beforeDir="false" afterPath="$PROJECT_DIR$/Artyom's stuff/gui1.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/gui1_map_position.py" beforeDir="false" afterPath="$PROJECT_DIR$/Artyom's stuff/gui1_map_position.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/GUI_new.py" beforeDir="false" afterPath="$PROJECT_DIR$/GUI_new.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/plot_day.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/plot_week.py" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -52,27 +42,27 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "last_opened_file_path": "E:/Github/PSW_G10/wsgi.py",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;last_opened_file_path&quot;: &quot;E:/Github/PSW_G10/wsgi.py&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   },
-  "keyToStringList": {
-    "DatabaseDriversLRU": [
-      "mysql"
+  &quot;keyToStringList&quot;: {
+    &quot;DatabaseDriversLRU&quot;: [
+      &quot;mysql&quot;
     ]
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\Users\jesse\Documents\GitHub\PSW_G10\Artyom's stuff" />
@@ -82,7 +72,7 @@
       <recent name="C:\Y2\Q2\ProjSW\mqtt_beta\client" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.GUI_new">
+  <component name="RunManager">
     <configuration name="GUI_new" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="PSW_G10" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -242,6 +232,7 @@
       <option name="presentableId" value="Default" />
       <updated>1669377782920</updated>
       <workItem from="1672950147157" duration="30475000" />
+      <workItem from="1673595695100" duration="20748000" />
     </task>
     <task id="LOCAL-00001" summary="Last commit was partial">
       <created>1669883048910</created>
@@ -285,7 +276,14 @@
       <option name="project" value="LOCAL" />
       <updated>1673102533174</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Added GUI functionality:&#10;Created functions to make SQL queries and plot these metrics over a given period.">
+      <created>1673557747828</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1673557747828</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -310,7 +308,8 @@
     <MESSAGE value="Optimized logging&#10;- csv_logger - changed the logging for easier processing" />
     <MESSAGE value="Added custom py sensor and updated default client constructor.&#10;&#10;Warning: The decoder doesn't work with the current custome py-sensor. Decoder needs to be refactored." />
     <MESSAGE value="Added custom py sensor and updated default client constructor.&#10;&#10;Warning: The decoder doesnt work with the current custome py-sensor. Decoder needs to be refactored." />
-    <option name="LAST_COMMIT_MESSAGE" value="Added custom py sensor and updated default client constructor.&#10;&#10;Warning: The decoder doesnt work with the current custome py-sensor. Decoder needs to be refactored." />
+    <MESSAGE value="Added GUI functionality:&#10;Created functions to make SQL queries and plot these metrics over a given period." />
+    <option name="LAST_COMMIT_MESSAGE" value="Added GUI functionality:&#10;Created functions to make SQL queries and plot these metrics over a given period." />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
@@ -334,13 +333,14 @@
     <SUITE FILE_PATH="coverage/alt_main_1_py$gui1_map_position.coverage" NAME="gui1_map_position Coverage Results" MODIFIED="1673486103278" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/alt_main_1_py$main.coverage" NAME="main Coverage Results" MODIFIED="1673351612289" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/alt_main_1_py$wsgi.coverage" NAME="wsgi Coverage Results" MODIFIED="1673351595902" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/PSW_G10$GUI_new.coverage" NAME="GUI_new Coverage Results" MODIFIED="1673557454776" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/PSW_G10$GUI_new.coverage" NAME="GUI_new Coverage Results" MODIFIED="1673892155444" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/alt_main_1_py$py_group10.coverage" NAME="py_group10 Coverage Results" MODIFIED="1673462753356" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/alt_main_1_py$lht_saxion.coverage" NAME="lht_saxion Coverage Results" MODIFIED="1673351606746" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/PSW_G10$gui1.coverage" NAME="gui1 Coverage Results" MODIFIED="1673521803240" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/PSW_G10$gui1.coverage" NAME="gui1 Coverage Results" MODIFIED="1673604560103" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/Artyom's stuff" />
     <SUITE FILE_PATH="coverage/PSW_G10$gui.coverage" NAME="gui Coverage Results" MODIFIED="1673347212485" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/alt_main_1_py$gui1.coverage" NAME="gui1 Coverage Results" MODIFIED="1673487749394" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/alt_main_1_py$alt_main_1.coverage" NAME="alt_main_1 Coverage Results" MODIFIED="1673351602113" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/PSW_G10$gui1_map_position.coverage" NAME="gui1_map_position Coverage Results" MODIFIED="1673347739381" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/PSW_G10$plot_day.coverage" NAME="plot_day Coverage Results" MODIFIED="1673892211638" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="true" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>
