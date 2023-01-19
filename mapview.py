@@ -7,7 +7,6 @@ if conn.is_connected():
     print("connected")
 cursor = conn.cursor()
 
-
 def mapviewsaxion(sensor):
     latitude, longitude = location(sensor)
     top = tk.Toplevel()

@@ -1,10 +1,12 @@
 import tkinter as tk
+
+import numpy as np
 from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg, NavigationToolbar2Tk)
 import mysql.connector
 import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
+import matplotlib.ticker as mticker
 from matplotlib.figure import Figure
-import tkintermapview
-from mapview import mapviewlora, mapviewgronau, mapviewsaxion, mapviewwierden
 
 # connect to mysql
 conn = mysql.connector.connect(host="139.144.177.81", user="ADMIN", password="", database="mydatabase")
@@ -19,30 +21,13 @@ In this case the period options are: day/week/month(not implemented)
 Possible additions: last hour / last 3 days?
 """
 
-# TODO:
-# - update xlabels based on period of function
+#TODO:
 # - convert datetime to better format depending on period
-# - Add Light as metric to function
-# - Add month as period to function
 # - Better GUI
 # - Metadata per device
-# - More buttons for metrics/period combos
-
-
-###GEOGRAPHICAL POSITION
-
-TIME = "day"
-
-
-def time_period(time="day"):
-    if time == "day" or time == "week" or time == "month":
-        TIME = time
-    else:
-        TIME = "day"
-
 
 def plot(metric, sensor, period):
-    # Create new window to plot figure in
+    #Create new window to plot figure in
     root = create_window()
     # TEMPERATURE
     if metric == "Temperature":
@@ -54,8 +39,7 @@ def plot(metric, sensor, period):
         # Only these sensors read an inside temperature
         if sensor == "py-saxion" or sensor == "py-wierden" or sensor == "py-gronau" or sensor == "py-group9" or sensor == "lht-saxion":
             cursor.execute(
-                "SELECT temp_in, time from status where time > DATE_SUB(CURRENT_DATE(), INTERVAL 1 {}) AND device_id = '{}'".format(
-                    period, sensor))
+                "SELECT temp_in, time from status where time > DATE_SUB(CURRENT_DATE(), INTERVAL 1 {}) AND device_id = '{}'".format(period, sensor))
 
             result = cursor.fetchall()
             for r in result:
@@ -64,8 +48,7 @@ def plot(metric, sensor, period):
         # All other sensors read an outside temperature
         else:
             cursor.execute(
-                "SELECT temp_out, time from status where time > DATE_SUB(CURRENT_DATE(), INTERVAL 1 {}) AND device_id = '{}'".format(
-                    period, sensor))
+                "SELECT temp_out, time from status where time > DATE_SUB(CURRENT_DATE(), INTERVAL 1 {}) AND device_id = '{}'".format(period, sensor))
             result = cursor.fetchall()
             for r in result:
                 temp.append(r[0])
@@ -75,8 +58,7 @@ def plot(metric, sensor, period):
         # Thus, in this case it will get extracted specifically for a subplot.
         if sensor == 'lht-saxion':
             cursor.execute(
-                "SELECT temp_out, time from status where time > DATE_SUB(CURRENT_DATE(), INTERVAL 1 {}) AND device_id = '{}'".format(
-                    period, sensor))
+                "SELECT temp_out, time from status where time > DATE_SUB(CURRENT_DATE(), INTERVAL 1 {}) AND device_id = '{}'".format(period, sensor))
             result = cursor.fetchall()
             for r in result:
                 temp_lht_saxion.append(r[0])
@@ -85,19 +67,27 @@ def plot(metric, sensor, period):
         # If 'lht-saxion' make a subplot of both inside and outside temperature.
         if sensor == 'lht-saxion':
             fig, ax = plt.subplots(2, sharex=True)
+            plt.xticks(rotation=90)
             ax[0].plot(dates, temp)
             ax[0].set_title('Indoors Temperature detected by ' + sensor)
             ax[1].plot(dates_lht_saxion, temp_lht_saxion)
             ax[1].set_title('Exterior Temperature detected by ' + sensor)
             ax[0].set(ylabel='Temperature (Centigrade)')
-            ax[1].set(xlabel='Time (Hours)', ylabel='Temperature (Centigrade)')
+            ax[1].set(ylabel='Temperature (Centigrade)')
+            if period == 'day': ax[1].set(xlabel='Time (hours)')
+            elif period == 'week': ax[1].set(xlabel='Time (days)')
+            elif period == 'month': ax[1].set(xlabel='Time (days)')
 
         # Else make a single plot of the temperature read indoors.
         else:
             fig, ax = plt.subplots()
             ax.plot(dates, temp)
+            plt.xticks(rotation=90)
             ax.set_title('Indoors Temperature detected by ' + sensor)
-            ax.set(xlabel='Time (Hours)', ylabel='Temperature (Centigrade)')
+            ax.set(ylabel='Temperature (Centigrade)')
+            if period == 'day': ax.set(xlabel='Time (hours)')
+            elif period == 'week': ax.set(xlabel='Time (days)')
+            elif period == 'month': ax.set(xlabel='Time (days)')
 
     # HUMIDITY
     if metric == "Humidity":
@@ -105,8 +95,7 @@ def plot(metric, sensor, period):
         dates = []
         # Read values from database
         cursor.execute(
-            "SELECT humidity, time from status where time > DATE_SUB(CURRENT_DATE(), INTERVAL 1 {}) AND device_id = '{}'".format(
-                period, sensor))
+            "SELECT humidity, time from status where time > DATE_SUB(CURRENT_DATE(), INTERVAL 1 {}) AND device_id = '{}'".format(period, sensor))
         result = cursor.fetchall()
         for r in result:
             humidity.append(r[0])
@@ -115,8 +104,15 @@ def plot(metric, sensor, period):
         # Plot humidity
         fig, ax = plt.subplots()
         ax.plot(dates, humidity)
+        plt.xticks(rotation=90)
         ax.set_title('Relative humidity detected by ' + sensor)
-        ax.set(xlabel='Time (Hours)', ylabel='Relative humidity')
+        ax.set(ylabel='Relative humidity')
+        if period == 'day':
+            ax.set(xlabel='Time (hours)')
+        elif period == 'week':
+            ax.set(xlabel='Time (days)')
+        elif period == 'month':
+            ax.set(xlabel='Time (days)')
 
     # PRESSURE
     if metric == "Pressure":
@@ -124,8 +120,7 @@ def plot(metric, sensor, period):
         dates = []
         # read values from database.
         cursor.execute(
-            "SELECT pressure, time from status where time > DATE_SUB(CURRENT_DATE(), INTERVAL 1 {}) AND device_id = '{}'".format(
-                period, sensor))
+            "SELECT pressure, time from status where time > DATE_SUB(CURRENT_DATE(), INTERVAL 1 {}) AND device_id = '{}'".format(period, sensor))
         result = cursor.fetchall()
         for r in result:
             pressure.append(r[0])
@@ -134,11 +129,44 @@ def plot(metric, sensor, period):
         # Plot Pressure
         fig, ax = plt.subplots()
         ax.plot(dates, pressure)
+        plt.xticks(rotation=90)
         ax.set_title('Pressure detected by ' + sensor)
-        ax.set(xlabel='Time (Hours)', ylabel='Pressure (Pascal)')
-        plt.show()
+        ax.set(ylabel='Pressure (Pascal)')
+        if period == 'day':
+            ax.set(xlabel='Time (hours)')
+        elif period == 'week':
+            ax.set(xlabel='Time (days)')
+        elif period == 'month':
+            ax.set(xlabel='Time (days)')
 
-    # Draw plot(s) in window
+
+    # LIGHT
+    if metric == "Light":
+       light = []
+       dates = []
+       # read values from database.
+       cursor.execute(
+           "SELECT light, time from status where time > DATE_SUB(CURRENT_DATE(), INTERVAL 1 {}) AND device_id = '{}'".format(
+               period, sensor))
+       result = cursor.fetchall()
+       for r in result:
+           light.append(r[0])
+           dates.append(r[1])
+       # Plot Light
+       fig, ax = plt.subplots()
+       ax.plot(dates, light)
+       plt.xticks(rotation=90)
+       ax.set_title('Light detected by ' + sensor)
+       ax.set(ylabel='Light (Lux?)')
+       if period == 'day':
+           ax.set(xlabel='Time (hours)')
+       elif period == 'week':
+           ax.set(xlabel='Time (days)')
+       elif period == 'month':
+           ax.set(xlabel='Time (days)')
+
+
+    #Draw plot(s) in window
     canvas = FigureCanvasTkAgg(fig, master=root)
     canvas.draw()
     canvas.get_tk_widget().pack()
@@ -150,7 +178,6 @@ def plot(metric, sensor, period):
     # placing the toolbar on the Tkinter window
     canvas.get_tk_widget().pack()
 
-
 def create_window():
     newwindow = tk.Toplevel(root)
     return newwindow
@@ -161,36 +188,7 @@ if __name__ == '__main__':
     root.title('Weatherbase GUI')
     root.geometry("500x500")
 
-    # GEOGRAPHICAL POSITION
-
-    labelposition = tk.Label(root, text="Geographical Position")
-    # Label1.grid(row=0, column=0)
-
-    button_location_saxion = tk.Button(master=root,
-                                       command=lambda: mapviewsaxion("py-saxion"),
-                                       height=2,
-                                       width=30,
-                                       text="Saxion")
-
-    button_location_wierden = tk.Button(master=root,
-                                        command=lambda: mapviewwierden("py-wierden"),
-                                        height=2,
-                                        width=30,
-                                        text="Wierden")
-
-    button_location_gronau = tk.Button(master=root,
-                                       command=lambda: mapviewgronau("lht-gronau"),
-                                       height=2,
-                                       width=30,
-                                       text="Gronau")
-
-    button_location_lora = tk.Button(master=root,
-                                     command=lambda: mapviewlora("py-group9"),
-                                     height=2,
-                                     width=30,
-                                     text="Lora")
-
-    # TEMPERATURE
+    #TEMPERATURE
     button_temp_pysax = tk.Button(master=root,
                                   command=lambda: plot("Temperature", "py-saxion", "day"),
                                   height=2,
@@ -223,7 +221,7 @@ if __name__ == '__main__':
                                    height=2,
                                    width=30,
                                    text="Plot Temperature (last day) lht-wierden")
-    # HUMIDITY
+    #HUMIDITY
     button_hum_lhtgro = tk.Button(master=root,
                                   command=lambda: plot("Humidity", "lht-gronau", "day"),
                                   height=2,
@@ -241,8 +239,7 @@ if __name__ == '__main__':
                                   height=2,
                                   width=30,
                                   text="Plot Humidity (last day) lht-wierden")
-    # PRESSURE
-
+    #PRESSURE
     button_pres_pysax = tk.Button(master=root,
                                   command=lambda: plot("Pressure", "py-saxion", "day"),
                                   height=2,
@@ -253,39 +250,323 @@ if __name__ == '__main__':
                                   height=2,
                                   width=30,
                                   text="Plot Pressure (last day) py-wierden")
+    #LIGHT
+    button_light_pysax = tk.Button(master=root,
+                                  command=lambda: plot("Light", "py-saxion", "day"),
+                                  height=2,
+                                  width=30,
+                                  text="Plot Light (last day) py-saxion ")
+    button_light_pywie = tk.Button(master=root,
+                                  command=lambda: plot("Temperature", "py-wierden", "day"),
+                                  height=2,
+                                  width=30,
+                                  text="Plot Light (last day) py-wierden")
+
+    button_light_pygrp10 = tk.Button(master=root,
+                                    command=lambda: plot("Light", "py-group9", "day"),
+                                    height=2,
+                                    width=30,
+                                    text="Plot Light (last day) py-group10")
+
+    button_light_lhtgro = tk.Button(master=root,
+                                   command=lambda: plot("Light", "lht-gronau", "day"),
+                                   height=2,
+                                   width=30,
+                                   text="Plot Light (last day) lht-gronau")
+
+    button_light_lhtwie = tk.Button(master=root,
+                                   command=lambda: plot("Light", "lht-wierden", "day"),
+                                   height=2,
+                                   width=30,
+                                   text="Plot Light (last day) lht-wierden")
+
+
     # TEMPERATURE WEEK
     button_temp_pysax_week = tk.Button(master=root,
-                                       command=lambda: plot("Temperature", "py-saxion", "week"),
-                                       height=2,
-                                       width=30,
-                                       text="Plot Temperature (last week) py-saxion ")
+                                  command=lambda: plot("Temperature", "py-saxion", "week"),
+                                  height=2,
+                                  width=30,
+                                  text="Plot Temperature (last week) py-saxion ")
     button_temp_pywie_week = tk.Button(master=root,
-                                       command=lambda: plot("Temperature", "py-wierden", "week"),
-                                       height=2,
-                                       width=30,
-                                       text="Plot Temperature (last week) py-wierden")
+                                  command=lambda: plot("Temperature", "py-wierden", "week"),
+                                  height=2,
+                                  width=30,
+                                  text="Plot Temperature (last week) py-wierden")
 
     button_temp_pygrp10_week = tk.Button(master=root,
-                                         command=lambda: plot("Temperature", "py-group9", "week"),
-                                         height=2,
-                                         width=30,
-                                         text="Plot Temperature (last week) py-group10")
+                                    command=lambda: plot("Temperature", "py-group9", "week"),
+                                    height=2,
+                                    width=30,
+                                    text="Plot Temperature (last week) py-group10")
 
     button_temp_lhtgro_week = tk.Button(master=root,
-                                        command=lambda: plot("Temperature", "lht-gronau", "week"),
-                                        height=2,
-                                        width=30,
-                                        text="Plot Temperature (last week) lht-gronau")
+                                   command=lambda: plot("Temperature", "lht-gronau", "week"),
+                                   height=2,
+                                   width=30,
+                                   text="Plot Temperature (last week) lht-gronau")
     button_temp_lhtsax_week = tk.Button(master=root,
-                                        command=lambda: plot("Temperature", "lht-saxion", "week"),
-                                        height=2,
-                                        width=30,
-                                        text="Plot Temperature (last week) lht-saxion")
+                                   command=lambda: plot("Temperature", "lht-saxion", "week"),
+                                   height=2,
+                                   width=30,
+                                   text="Plot Temperature (last week) lht-saxion")
     button_temp_lhtwie_week = tk.Button(master=root,
-                                        command=lambda: plot("Temperature", "lht-wierden", "week"),
+                                   command=lambda: plot("Temperature", "lht-wierden", "week"),
+                                   height=2,
+                                   width=30,
+                                   text="Plot Temperature (last week) lht-wierden")
+
+    #HUMIDITY WEEK
+    button_hum_lhtgro_week = tk.Button(master=root,
+                                  command=lambda: plot("Humidity", "lht-gronau", "week"),
+                                  height=2,
+                                  width=30,
+                                  text="Plot Humidity (last week) lht-gronau")
+
+    button_hum_lhtsax_week = tk.Button(master=root,
+                                  command=lambda: plot("Humidity", "lht-saxion", "week"),
+                                  height=2,
+                                  width=30,
+                                  text="Plot Humidity (last week) lht-saxion")
+
+    button_hum_lhtwie_week = tk.Button(master=root,
+                                  command=lambda: plot("Humidity", "lht-wierden", "week"),
+                                  height=2,
+                                  width=30,
+                                  text="Plot Humidity (last week) lht-wierden")
+    #PRESSURE WEEK
+    button_pres_pysax_week = tk.Button(master=root,
+                                  command=lambda: plot("Pressure", "py-saxion", "week"),
+                                  height=2,
+                                  width=30,
+                                  text="Plot Pressure (last week) py-saxion ")
+    button_pres_pywie_week = tk.Button(master=root,
+                                  command=lambda: plot("Pressure", "py-wierden", "week"),
+                                  height=2,
+                                  width=30,
+                                  text="Plot Pressure (last week) py-wierden")
+    #LIGHT WEEK
+    button_light_pysax_week = tk.Button(master=root,
+                                   command=lambda: plot("Light", "py-saxion", "week"),
+                                   height=2,
+                                   width=30,
+                                   text="Plot Light (last week) py-saxion ")
+    button_light_pywie_week = tk.Button(master=root,
+                                   command=lambda: plot("Light", "py-wierden", "week"),
+                                   height=2,
+                                   width=30,
+                                   text="Plot Light (last week) py-wierden")
+
+    button_light_pygrp10_week = tk.Button(master=root,
+                                     command=lambda: plot("Light", "py-group9", "week"),
+                                     height=2,
+                                     width=30,
+                                     text="Plot Light (last week) py-group10")
+
+    button_light_lhtgro_week = tk.Button(master=root,
+                                    command=lambda: plot("Light", "lht-gronau", "week"),
+                                    height=2,
+                                    width=30,
+                                    text="Plot Light (last week) lht-gronau")
+
+    button_light_lhtwie_week = tk.Button(master=root,
+                                    command=lambda: plot("Light", "lht-wierden", "week"),
+                                    height=2,
+                                    width=30,
+                                    text="Plot Light (last week) lht-wierden")
+
+    #TEMPERATURE MONTH
+    button_temp_pysax_month = tk.Button(master=root,
+                                  command=lambda: plot("Temperature", "py-saxion", "month"),
+                                  height=2,
+                                  width=30,
+                                  text="Plot Temperature (last month) py-saxion ")
+    button_temp_pywie_month = tk.Button(master=root,
+                                  command=lambda: plot("Temperature", "py-wierden", "month"),
+                                  height=2,
+                                  width=30,
+                                  text="Plot Temperature (last month) py-wierden")
+
+    button_temp_pygrp10_month = tk.Button(master=root,
+                                    command=lambda: plot("Temperature", "py-group9", "month"),
+                                    height=2,
+                                    width=30,
+                                    text="Plot Temperature (last month) py-group10")
+
+    button_temp_lhtgro_month = tk.Button(master=root,
+                                   command=lambda: plot("Temperature", "lht-gronau", "month"),
+                                   height=2,
+                                   width=30,
+                                   text="Plot Temperature (last month) lht-gronau")
+    button_temp_lhtsax_month = tk.Button(master=root,
+                                   command=lambda: plot("Temperature", "lht-saxion", "month"),
+                                   height=2,
+                                   width=30,
+                                   text="Plot Temperature (last month) lht-saxion")
+    button_temp_lhtwie_month = tk.Button(master=root,
+                                   command=lambda: plot("Temperature", "lht-wierden", "month"),
+                                   height=2,
+                                   width=30,
+                                   text="Plot Temperature (last month) lht-wierden")
+
+    #HUMIDITY MONTH
+    button_hum_lhtgro_month = tk.Button(master=root,
+                                  command=lambda: plot("Humidity", "lht-gronau", "month"),
+                                  height=2,
+                                  width=30,
+                                  text="Plot Humidity (last month) lht-gronau")
+
+    button_hum_lhtsax_month = tk.Button(master=root,
+                                  command=lambda: plot("Humidity", "lht-saxion", "month"),
+                                  height=2,
+                                  width=30,
+                                  text="Plot Humidity (last month) lht-saxion")
+
+    button_hum_lhtwie_month = tk.Button(master=root,
+                                  command=lambda: plot("Humidity", "lht-wierden", "month"),
+                                  height=2,
+                                  width=30,
+                                  text="Plot Humidity (last month) lht-wierden")
+    #PRESSURE MONTH
+    button_pres_pysax_month = tk.Button(master=root,
+                                  command=lambda: plot("Pressure", "py-saxion", "month"),
+                                  height=2,
+                                  width=30,
+                                  text="Plot Pressure (last month) py-saxion ")
+    button_pres_pywie_month = tk.Button(master=root,
+                                  command=lambda: plot("Temperature", "py-wierden", "month"),
+                                  height=2,
+                                  width=30,
+                                  text="Plot Pressure (last month) py-wierden")
+    #LIGHT MONTH
+    button_light_pysax_month = tk.Button(master=root,
+                                   command=lambda: plot("Light", "py-saxion", "month"),
+                                   height=2,
+                                   width=30,
+                                   text="Plot Light (last month) py-saxion ")
+    button_light_pywie_month = tk.Button(master=root,
+                                   command=lambda: plot("Temperature", "py-wierden", "month"),
+                                   height=2,
+                                   width=30,
+                                   text="Plot Light (last month) py-wierden")
+
+    button_light_pygrp10_month = tk.Button(master=root,
+                                     command=lambda: plot("Light", "py-group9", "month"),
+                                     height=2,
+                                     width=30,
+                                     text="Plot Light (last month) py-group10")
+
+    button_light_lhtgro_month = tk.Button(master=root,
+                                    command=lambda: plot("Light", "lht-gronau", "month"),
+                                    height=2,
+                                    width=30,
+                                    text="Plot Light (last month) lht-gronau")
+
+    button_light_lhtwie_month = tk.Button(master=root,
+                                    command=lambda: plot("Light", "lht-wierden", "month"),
+                                    height=2,
+                                    width=30,
+                                    text="Plot Light (last month) lht-wierden")
+
+   # #Pack all temperature buttons
+   # button_temp_pysax.pack(side="top")
+   # button_temp_pywie.pack(side="top")
+   # button_temp_pygrp10.pack(side="top")
+   # button_temp_lhtgro.pack(side="top")
+   # button_temp_lhtsax.pack(side ="top")
+   # button_temp_lhtwie.pack(side ="top")
+
+   # #Pack all humidity buttons
+   # button_hum_lhtgro.pack(side="top")
+   # button_hum_lhtsax.pack(side="top")
+   # button_hum_lhtwie.pack(side="top")
+
+   # # Pack all pressure buttons
+   # button_pres_pysax.pack(side="top")
+   # button_pres_pywie.pack(side="top")
+
+   # # Pack all light buttons
+   # button_light_pywie.pack(side="top")
+   # button_light_pysax.pack(side="top")
+   # button_light_pygrp10.pack(side="top")
+   # button_light_lhtwie.pack(side="top")
+   # button_light_lhtgro.pack(side="top")
+#
+   # # Pack all temperature buttons week
+   # button_temp_pysax_week.pack(side="top")
+   # button_temp_pywie_week.pack(side="top")
+   # button_temp_pygrp10_week.pack(side="top")
+   # button_temp_lhtgro_week.pack(side="top")
+   # button_temp_lhtsax_week.pack(side="top")
+   # button_temp_lhtwie_week.pack(side="top")
+#
+   # # Pack all humidity buttons week
+   # button_hum_lhtgro_week.pack(side="top")
+   # button_hum_lhtsax_week.pack(side="top")
+   # button_hum_lhtwie_week.pack(side="top")
+#
+   # # Pack all pressure buttons week
+   # button_pres_pysax_week.pack(side="top")
+   # button_pres_pywie_week.pack(side="top")
+#
+   # # pack all light week
+   # button_light_pysax_week.pack(side="top")
+   # button_light_pywie_week.pack(side="top")
+   # button_light_pygrp10_week.pack(side="top")
+   # button_light_lhtwie_week.pack(side="top")
+   # button_light_lhtgro_week.pack(side="top")
+
+    # Pack all temperature buttons month
+    button_temp_pysax_week.pack(side="top")
+    button_temp_pywie_week.pack(side="top")
+    button_temp_pygrp10_week.pack(side="top")
+    button_temp_lhtgro_week.pack(side="top")
+    button_temp_lhtsax_week.pack(side="top")
+    button_temp_lhtwie_week.pack(side="top")
+
+    # Pack all humidity buttons month
+    button_hum_lhtgro_month.pack(side="top")
+    button_hum_lhtsax_month.pack(side="top")
+    button_hum_lhtwie_month.pack(side="top")
+
+    # Pack all pressure buttons month
+    button_pres_pysax_month.pack(side="top")
+    button_pres_pywie_month.pack(side="top")
+
+    # pack all light month
+    button_light_pysax_month.pack(side="top")
+    button_light_pywie_month.pack(side="top")
+    button_light_pygrp10_month.pack(side="top")
+    button_light_lhtwie_month.pack(side="top")
+    button_light_lhtgro_month.pack(side="top")
+
+    # GEOGRAPHICAL POSITION
+
+    labelposition = tk.Label(root, text="Geographical Position")
+    # Label1.grid(row=0, column=0)
+
+    button_location_saxion = tk.Button(master=root,
+                                       command=lambda: mapviewsaxion("py-saxion"),
+                                       height=2,
+                                       width=30,
+                                       text="Saxion")
+
+    button_location_wierden = tk.Button(master=root,
+                                        command=lambda: mapviewwierden("py-wierden"),
                                         height=2,
                                         width=30,
-                                        text="Plot Temperature (last week) lht-wierden")
+                                        text="Wierden")
+
+    button_location_gronau = tk.Button(master=root,
+                                       command=lambda: mapviewgronau("lht-gronau"),
+                                       height=2,
+                                       width=30,
+                                       text="Gronau")
+
+    button_location_lora = tk.Button(master=root,
+                                     command=lambda: mapviewlora("py-group9"),
+                                     height=2,
+                                     width=30,
+                                     text="Lora")
 
     button_day = tk.Button(master=root,
                            command=lambda: time_period("day"),
@@ -316,30 +597,5 @@ if __name__ == '__main__':
     button_day.pack(side="top", anchor="nw")
     button_week.pack(side="top", anchor="nw")
     button_month.pack(side="top", anchor="nw")
-
-    # Pack all temperature buttons
-    button_temp_pysax.pack(side="top")
-    button_temp_pywie.pack(side="top")
-    button_temp_pygrp10.pack(side="top")
-    button_temp_lhtgro.pack(side="top")
-    button_temp_lhtsax.pack(side="top")
-    button_temp_lhtwie.pack(side="top")
-
-    # Pack all humidity buttons
-    button_hum_lhtgro.pack(side="top")
-    button_hum_lhtsax.pack(side="top")
-    button_hum_lhtwie.pack(side="top")
-
-    # Pack all pressure buttons
-    button_pres_pysax.pack(side="top")
-    button_pres_pywie.pack(side="top")
-
-    # Pack all temperature buttons week
-    button_temp_pysax_week.pack(side="top")
-    button_temp_pywie_week.pack(side="top")
-    button_temp_pygrp10_week.pack(side="top")
-    button_temp_lhtgro_week.pack(side="top")
-    button_temp_lhtsax_week.pack(side="top")
-    button_temp_lhtwie_week.pack(side="top")
 
     root.mainloop()
