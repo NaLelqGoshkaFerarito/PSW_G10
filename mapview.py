@@ -20,6 +20,19 @@ def mapviewsaxion(sensor):
     # set_position(latitude, longitude)
     map_widget.set_position(float(longitude), float(latitude), marker=True)
 
+    def mapviewsaxion2(sensor):
+        latitude, longitude = location(sensor)
+        top = tk.Toplevel()
+        top.title('Map view app - Saxion')
+        top.geometry('600x400')
+        my_label = tk.LabelFrame(top)
+        my_label.pack(pady=20)
+        map_widget = tkintermapview.TkinterMapView(top, width=800, height=600, corner_radius=0)
+        map_widget.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
+        marker_saxion2 = map_widget.set_marker(float(longitude), float(latitude), text="Saxion Sensor")
+        # set_position2(latitude, longitude)
+        map_widget.set_position(float(longitude), float(latitude), marker=True)
+
 
 # map_widget.set_address("Saxion Sensor", marker=True)
 
@@ -50,6 +63,19 @@ def mapviewwierden(sensor):
     marker_wierden = map_widget.set_marker(float(longitude), float(latitude), text="Wierden Sensor")
     # set_position(latitude, longitude)
     map_widget.set_position(float(longitude), float(latitude), marker=True)
+
+    def mapviewwierden2(sensor):
+        latitude, longitude = location(sensor)
+        top = tk.Toplevel()
+        top.title('Map view app - Wierden')
+        top.geometry('600x400')
+        my_label = tk.LabelFrame(top)
+        my_label.pack(pady=20)
+        map_widget = tkintermapview.TkinterMapView(top, width=800, height=600, corner_radius=0)
+        map_widget.place(relx=0.5, rely=0.5, anchor=tk.CENTER)
+        marker_wierden2 = map_widget.set_marker(float(longitude), float(latitude), text="Wierden Sensor")
+        # set_position(latitude, longitude)
+        map_widget.set_position(float(longitude), float(latitude), marker=True)
 
 
 def mapviewlora(sensor):
