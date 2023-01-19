@@ -1,12 +1,9 @@
 import tkinter as tk
-
-import numpy as np
 from matplotlib.backends.backend_tkagg import (FigureCanvasTkAgg, NavigationToolbar2Tk)
 import mysql.connector
 import matplotlib.pyplot as plt
-import matplotlib.dates as mdates
-import matplotlib.ticker as mticker
 from matplotlib.figure import Figure
+from mapview import *
 
 # connect to mysql
 conn = mysql.connector.connect(host="139.144.177.81", user="ADMIN", password="", database="mydatabase")
@@ -14,12 +11,6 @@ if conn.is_connected():
     print("connected")
 cursor = conn.cursor()
 
-"""
-Function to plot all metric data [Temperature, Humidity, Pressure, Light]
-of a specific sensor given as arguments. It will return a plot of this data over a specific period.
-In this case the period options are: day/week/month(not implemented)
-Possible additions: last hour / last 3 days?
-"""
 
 #TODO:
 # - convert datetime to better format depending on period
@@ -36,51 +27,54 @@ def time_period(time="day"):
         TIME = time
     else:
         TIME = "day"
+
+"""
+Function to perform a specific SQL query
+"""
+def SQLquery(sql_metric,sensor, period):
+    metric =[]
+    time = []
+
+    cursor.execute(
+        "SELECT {}, time from status where time > DATE_SUB(CURRENT_DATE(), INTERVAL 1 {}) AND device_id = '{}'".format(sql_metric,
+            period, sensor))
+
+    result = cursor.fetchall()
+    for r in result:
+        metric.append(r[0])
+        time.append(r[1])
+    return metric, time
+
+
+"""
+Function to plot all metric data [Temperature, Humidity, Pressure, Light]
+of a specific sensor given as arguments. It will return a plot of this data over a specific period.
+In this case the period options are: day/week/month(not implemented)
+Possible additions: last hour / last 3 days?
+"""
 def plot(metric, sensor, period):
     #Create new window to plot figure in
     root = create_window()
     # TEMPERATURE
     if metric == "Temperature":
-        temp = []
-        dates = []
-        temp_lht_saxion = []
-        dates_lht_saxion = []
-
-        # Only these sensors read an inside temperature
+                # Only these sensors read an inside temperature
         if sensor == "py-saxion" or sensor == "py-wierden" or sensor == "py-gronau" or sensor == "py-group9" or sensor == "lht-saxion":
-            cursor.execute(
-                "SELECT temp_in, time from status where time > DATE_SUB(CURRENT_DATE(), INTERVAL 1 {}) AND device_id = '{}'".format(period, sensor))
-
-            result = cursor.fetchall()
-            for r in result:
-                temp.append(r[0])
-                dates.append(r[1])
+            temp, dates = SQLquery("temp_in", sensor, period)
         # All other sensors read an outside temperature
         else:
-            cursor.execute(
-                "SELECT temp_out, time from status where time > DATE_SUB(CURRENT_DATE(), INTERVAL 1 {}) AND device_id = '{}'".format(period, sensor))
-            result = cursor.fetchall()
-            for r in result:
-                temp.append(r[0])
-                dates.append(r[1])
+            temp, dates = SQLquery("temp_out", sensor, period)
 
         # The sensor 'lht-saxion' reads both temp_out as temp_in.
         # Thus, in this case it will get extracted specifically for a subplot.
         if sensor == 'lht-saxion':
-            cursor.execute(
-                "SELECT temp_out, time from status where time > DATE_SUB(CURRENT_DATE(), INTERVAL 1 {}) AND device_id = '{}'".format(period, sensor))
-            result = cursor.fetchall()
-            for r in result:
-                temp_lht_saxion.append(r[0])
-                dates_lht_saxion.append(r[1])
+            temp_out, dates2 = SQLquery("temp_out", "lht-saxion", period)
 
         # If 'lht-saxion' make a subplot of both inside and outside temperature.
-        if sensor == 'lht-saxion':
             fig, ax = plt.subplots(2, sharex=True)
             plt.xticks(rotation=90)
             ax[0].plot(dates, temp)
             ax[0].set_title('Indoors Temperature detected by ' + sensor)
-            ax[1].plot(dates_lht_saxion, temp_lht_saxion)
+            ax[1].plot(dates2, temp_out)
             ax[1].set_title('Exterior Temperature detected by ' + sensor)
             ax[0].set(ylabel='Temperature (Centigrade)')
             ax[1].set(ylabel='Temperature (Centigrade)')
@@ -99,17 +93,12 @@ def plot(metric, sensor, period):
             elif period == 'week': ax.set(xlabel='Time (days)')
             elif period == 'month': ax.set(xlabel='Time (days)')
 
+
     # HUMIDITY
     if metric == "Humidity":
-        humidity = []
-        dates = []
-        # Read values from database
-        cursor.execute(
-            "SELECT humidity, time from status where time > DATE_SUB(CURRENT_DATE(), INTERVAL 1 {}) AND device_id = '{}'".format(period, sensor))
-        result = cursor.fetchall()
-        for r in result:
-            humidity.append(r[0])
-            dates.append(r[1])
+
+        ### IF NOT ALL SENSORS:
+        humidity, dates = SQLquery("humidity", sensor, period)
 
         # Plot humidity
         fig, ax = plt.subplots()
@@ -126,15 +115,7 @@ def plot(metric, sensor, period):
 
     # PRESSURE
     if metric == "Pressure":
-        pressure = []
-        dates = []
-        # read values from database.
-        cursor.execute(
-            "SELECT pressure, time from status where time > DATE_SUB(CURRENT_DATE(), INTERVAL 1 {}) AND device_id = '{}'".format(period, sensor))
-        result = cursor.fetchall()
-        for r in result:
-            pressure.append(r[0])
-            dates.append(r[1])
+        pressure, dates = SQLquery("pressure", sensor, period)
 
         # Plot Pressure
         fig, ax = plt.subplots()
@@ -152,16 +133,8 @@ def plot(metric, sensor, period):
 
     # LIGHT
     if metric == "Light":
-       light = []
-       dates = []
-       # read values from database.
-       cursor.execute(
-           "SELECT light, time from status where time > DATE_SUB(CURRENT_DATE(), INTERVAL 1 {}) AND device_id = '{}'".format(
-               period, sensor))
-       result = cursor.fetchall()
-       for r in result:
-           light.append(r[0])
-           dates.append(r[1])
+       light, dates = SQLquery("light", sensor, period)
+
        # Plot Light
        fig, ax = plt.subplots()
        ax.plot(dates, light)
@@ -174,7 +147,6 @@ def plot(metric, sensor, period):
            ax.set(xlabel='Time (days)')
        elif period == 'month':
            ax.set(xlabel='Time (days)')
-
 
     #Draw plot(s) in window
     canvas = FigureCanvasTkAgg(fig, master=root)
