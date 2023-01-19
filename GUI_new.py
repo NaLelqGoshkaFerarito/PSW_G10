@@ -26,6 +26,16 @@ Possible additions: last hour / last 3 days?
 # - Better GUI
 # - Metadata per device
 
+###GEOGRAPHICAL POSITION
+
+TIME = "day"
+
+
+def time_period(time="day"):
+    if time == "day" or time == "week" or time == "month":
+        TIME = time
+    else:
+        TIME = "day"
 def plot(metric, sensor, period):
     #Create new window to plot figure in
     root = create_window()
