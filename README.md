@@ -52,6 +52,13 @@ The member variables are as follows:
 - `latitude`, `longitude` - location of the sensor
 - `metadata` - a dictionary containing rssi and gateway information
 
+## Currently supported sensors and data
+- `py-group9` - temperature, light, humidity, location, altitude
+- `py-saxion` - temperature, pressure, light, location, altitude
+- `py-wierden` - temperature, pressure, light, location, altitude
+- `lht-gronau` - battery voltage and status, temperature, light, humidity, location
+- `lht-saxion` - battery voltage and status, temperature (inside and outside), humidity, location
+- `lht-wierden` - battery voltage and status, temperature, light, humidity, location
 
 ### SI-Units
 - `pressure` - Pascal [Pa]
