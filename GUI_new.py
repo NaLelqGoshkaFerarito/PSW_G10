@@ -62,7 +62,7 @@ def plot(metric, sensor, period):
     # TEMPERATURE
     if metric == "Temperature":
                 # Only these sensors read an inside temperature
-        if sensor == "py-saxion" or sensor == "py-wierden" or sensor == "py-gronau" or sensor == "py-group9" or sensor == "lht-saxion":
+        if sensor == "py-saxion" or sensor == "py-wierden" or sensor == "py-gronau" or sensor == "lht-saxion":
             temp, dates = SQLquery("temp_in", sensor, period)
         # All other sensors read an outside temperature
         else:
@@ -165,8 +165,8 @@ def plot(metric, sensor, period):
     canvas.get_tk_widget().grid()
 
     # creating the Matplotlib toolbar
-    toolbar = NavigationToolbar2Tk(canvas, root)
-    toolbar.update()
+    #toolbar = NavigationToolbar2Tk(canvas, root)
+    #toolbar.update()
 
     # placing the toolbar on the Tkinter window
     canvas.get_tk_widget().grid()
@@ -181,8 +181,13 @@ if __name__ == '__main__':
     root.geometry("1000x500")
 
     #plot("Humidity", "all", "day"),
+    root.geometry("500x500")
+    root.minsize(800,400)
+    root.maxsize(800,400)
+
 
     ###Options for dropdown menu
+
     options_time = [
         'day',
         'week',
@@ -239,6 +244,7 @@ if __name__ == '__main__':
 
     clicked_lhtsaxion = tk.StringVar()
     clicked_lhtsaxion.set(options[0])
+
     label_lhtsaxion = tk.Label(root, text="Sensor lht-saxion")
     drop_lhtsaxion = tk.OptionMenu(root, clicked_lhtsaxion, *options_lht)
 
@@ -258,7 +264,7 @@ if __name__ == '__main__':
 
     drop_time_pywierden = tk.OptionMenu(root, clicked_time_pywierden, *options_time)
 
-    button_display_pywierden = tk.Button(root, text="DISPLAY",command=lambda: plot(clicked_lhtsaxion.get(), "py-wierden",clicked_time_lhtsaxion.get()))
+    button_display_pywierden = tk.Button(root, text="DISPLAY",command=lambda: plot(clicked_pywierden.get(), "py-wierden",clicked_time_pywierden.get()))
 
 
     ###DROPDOWN MENU LHT-WIERDEN
@@ -272,10 +278,10 @@ if __name__ == '__main__':
 
     drop_time_lhtwierden = tk.OptionMenu(root, clicked_time_lhtwierden, *options_time)
 
-    button_display_lhtwierden = tk.Button(root, text="DISPLAY",command=lambda: plot(clicked_lhtsaxion.get(), "lht-wierden",clicked_time_lhtsaxion.get()))
+    button_display_lhtwierden = tk.Button(root, text="DISPLAY",command=lambda: plot(clicked_lhtwierden.get(), "lht-wierden",clicked_time_lhtwierden.get()))
 
 
-    ###DROPDOWN MENU PY-GRONAU
+    ###DROPDOWN MENU LHT-GRONAU
     clicked_time_lhtgronau = tk.StringVar()
     clicked_time_lhtgronau.set(options_time[0])
 
@@ -675,7 +681,7 @@ if __name__ == '__main__':
     # Label1.grid(row=0, column=0)
 
     button_location_saxion2 = tk.Button(master=root,
-                                       command=lambda: mapviewsaxion2("py-saxion"),
+                                       command=lambda: mapviewsaxion("py-saxion"),
                                        # height=2,
                                        # width=30,
                                        text="Saxion")
@@ -693,7 +699,7 @@ if __name__ == '__main__':
                                         text="Wierden")
 
     button_location_wierden2= tk.Button(master=root,
-                                        command=lambda: mapviewwierden2("py-wierden"),
+                                        command=lambda: mapviewwierden("py-wierden"),
                                         # height=2,
                                         # width=30,
                                         text="Wierden")
@@ -745,7 +751,7 @@ if __name__ == '__main__':
 
     label_lhtsaxion.grid(column=4, row=0)
     drop_lhtsaxion.grid(column=4, row=1)
-    drop_time_lhtsaxion.grid(column=4, row=2)
+    drop_time_lhtsaxion.grid(column=3, row=2)
     button_display_lhtsaxion.grid(column=4, row=3)
     button_location_saxion2.grid(column=4, row=4)
 
