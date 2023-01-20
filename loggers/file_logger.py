@@ -1,3 +1,5 @@
+# proof of concept for the csv_logger
+
 from .i_logger import ILogger
 from datetime import datetime
 

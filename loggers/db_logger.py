@@ -1,3 +1,5 @@
+# logs to an online database
+
 from .i_logger import ILogger
 from datetime import datetime
 from clients.data import PYData

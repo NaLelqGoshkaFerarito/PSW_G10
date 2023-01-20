@@ -1,3 +1,5 @@
+# standardized data class
+
 # all py sensors are the same
 class PYData:
     def __init__(self):

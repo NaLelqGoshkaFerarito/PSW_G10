@@ -1,3 +1,5 @@
+# provides general broker interaction functionality
+
 import paho.mqtt.client as mqtt
 from clients.data import PYData
 from clients.data import LHTDataTemp
