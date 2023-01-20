@@ -100,13 +100,20 @@ def plot(metric, sensor, period):
 
     # HUMIDITY
     if metric == "Humidity":
-
-        ### IF NOT ALL SENSORS:
-        humidity, dates = SQLquery("humidity", sensor, period)
-
-        # Plot humidity
         fig, ax = plt.subplots()
-        ax.plot(dates, humidity)
+        ### IF ALL SENSORS
+        if sensor == 'all':
+            hum_lht_sax, dates_sax = SQLquery("humidity", "lht-saxion", period)
+            hum_lht_gro, dates_gro = SQLquery("humidity", "lht-gronau", period)
+            hum_lht_wie, dates_wie = SQLquery("humidity", "lht-wierden", period)
+            ax.plot(dates_sax, hum_lht_sax, label='lht-saxion')
+            ax.plot(dates_gro, hum_lht_gro, label='lht-gronau')
+            ax.plot(dates_wie, hum_lht_wie, label='lht-wierden')
+            ax.legend()
+        else: ### IF NOT ALL SENSORS:
+            humidity, dates = SQLquery("humidity", sensor, period)
+            ax.plot(dates, humidity)
+        # Plot humidity
         plt.xticks(rotation=90)
         ax.set_title('Relative humidity detected by ' + sensor)
         ax.set(ylabel='Relative humidity')
@@ -171,7 +178,9 @@ def create_window():
 if __name__ == '__main__':
     root = tk.Tk()
     root.title('Weatherbase GUI')
-    root.geometry("500x500")
+    root.geometry("1000x500")
+
+    #plot("Humidity", "all", "day"),
 
     ###Options for dropdown menu
     options_time = [
@@ -199,6 +208,13 @@ if __name__ == '__main__':
 
     options_py = [
         'Temperature',
+        'Light'
+    ]
+
+    options_all = [
+        'Temperature',
+        'Humidity',
+        'Pressure',
         'Light'
     ]
 
@@ -285,6 +301,20 @@ if __name__ == '__main__':
     drop_time_pygroup9 = tk.OptionMenu(root, clicked_time_pygroup9, *options_time)
 
     button_display_pygroup9 = tk.Button(root, text="DISPLAY",command=lambda: plot(clicked_pygroup9.get(), "py-group9", clicked_time_pygroup9.get()))
+
+    ###DROPDOWN MENU ALL
+    clicked_time_all = tk.StringVar()
+    clicked_time_all.set(options_time[0])
+
+    clicked_all = tk.StringVar()
+    clicked_all.set(options[0])
+    label_all = tk.Label(root, text="All Sensors")
+    drop_all = tk.OptionMenu(root, clicked_all, *options_all)
+
+    drop_time_all = tk.OptionMenu(root, clicked_time_all, *options_time)
+
+    button_display_all = tk.Button(root, text="DISPLAY", command=lambda: plot(clicked_all.get(), "all",
+                                                                                   clicked_time_all.get()))
 
 
     #TEMPERATURE
@@ -736,6 +766,11 @@ if __name__ == '__main__':
     drop_time_pygroup9.grid(column=10, row=2)
     button_display_pygroup9.grid(column=10, row=3)
     button_location_lora.grid(column=10, row=4)
+
+    label_all.grid(column=12, row=0)
+    drop_all.grid(column=12, row=1)
+    drop_time_all.grid(column=12, row=2)
+    button_display_all.grid(column=12, row=3)
 
 
 
