@@ -32,6 +32,16 @@ The member variables are as follows:
 - `latitude`, `longitude`, `altitude` - location of the sensor
 - `metadata` - a dictionary containing rssi and gateway information 
 
+### CustomPY
+The member variables are as follows:
+- `device_id` - the name of the device
+- `light`, `temperature`, `humidity` - the extracted payload (reference MQTTClient -> Functions) information
+- `datetime` - the time retrieved from the client
+- `consumed_airtime` - travel time of the packet
+- `latitude`, `longitude`, `altitude` - location of the sensor
+- `metadata` - a dictionary containing rssi and gateway information
+
+
 ### LHTDataTemp
 The member variables are as follows: 
 - `device_id` - the name of the device
